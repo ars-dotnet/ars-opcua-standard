@@ -76,7 +76,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Application
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Stack", "Stack", "{2DC9F7F3-6698-4875-88A3-50678170A810}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ars.Common.OpcUA", "Ars.Common.OpcUA", "{AD4A3D81-5562-42FC-8856-BB3B107006CC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ars.OpcUA", "Ars.OpcUA", "{AD4A3D81-5562-42FC-8856-BB3B107006CC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ars.OpcUaClient", "Ars.OpcUaClient\Ars.OpcUaClient.csproj", "{8C342BC1-12FB-4496-8733-11495FAFAB3E}"
 EndProject
@@ -84,11 +84,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ars.OpcUaServer", "Ars.OpcU
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ars.OpcUaTool", "Ars.OpcUaTool\Ars.OpcUaTool.csproj", "{02882C74-488B-4346-AB08-FE74FB278649}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ars.OpcUaNodeView", "Ars.OpcUaNodeView\Ars.OpcUaNodeView.csproj", "{D02FC045-DF1B-41F3-B552-60B6B93F981A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ars.OpcUaNodeView", "Ars.OpcUaNodeView\Ars.OpcUaNodeView.csproj", "{D02FC045-DF1B-41F3-B552-60B6B93F981A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ars.OpcUaTest", "Ars.OpcUaTest\Ars.OpcUaTest.csproj", "{43115D8B-6CAA-44DE-9558-D8FFFDCC3147}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ars.OpcUaTest", "Ars.OpcUaTest\Ars.OpcUaTest.csproj", "{43115D8B-6CAA-44DE-9558-D8FFFDCC3147}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ars.OpcUaNodeViewEdit", "Ars.OpcUaNodeViewEdit\Ars.OpcUaNodeViewEdit.csproj", "{79F3A7E3-7544-4CD8-88FD-EDEE4B8C27CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ars.OpcUaNodeViewEdit", "Ars.OpcUaNodeViewEdit\Ars.OpcUaNodeViewEdit.csproj", "{79F3A7E3-7544-4CD8-88FD-EDEE4B8C27CA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{7E9659C0-B1F3-4CB0-A1CE-96796CFB07AA}"
 EndProject

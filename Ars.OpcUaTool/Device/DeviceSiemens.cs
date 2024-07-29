@@ -1,4 +1,4 @@
-﻿using HslCommunication.Profinet.Siemens;
+using HslCommunication.Profinet.Siemens;
 using Ars.Common.OpcUaTool.Node.Device;
 using System;
 using System.Collections.Generic;
@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using HslCommunication.Profinet.Omron;
+using HslCommunication;
 
 namespace Ars.Common.OpcUaTool.Device
 {
@@ -72,7 +74,6 @@ namespace Ars.Common.OpcUaTool.Device
 
 
         #endregion
-        
 
         #region Protect Override
 

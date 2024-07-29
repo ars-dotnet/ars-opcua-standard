@@ -3387,6 +3387,7 @@ namespace Opc.Ua
 
                 try
                 {
+                    //ars标记 这里读取
                     result = ReadValueAttribute(
                         context,
                         indexRange,

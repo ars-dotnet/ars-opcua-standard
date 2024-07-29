@@ -360,7 +360,7 @@ namespace Opc.Ua.Bindings
             if (!(result is WriteOperation operation))
             {
                 throw new ArgumentNullException(nameof(result));
-            }
+            } 
 
             try
             {

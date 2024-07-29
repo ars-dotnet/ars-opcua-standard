@@ -40,7 +40,8 @@ namespace Ars.Common.OpcUaTool.Core
         /// 启动服务器的后台存储
         /// </summary>
         /// <param name="port"></param>
-        public void ServerStart(int port )
+        /// <param name="openRealTimeAcquisite">是否开始实时采集</param>
+        public void ServerStart(int port,bool openRealTimeAcquisite)
         {
             simplifyServer = new NetSimplifyServer( );
             simplifyServer.Token = this.token;
@@ -50,10 +51,18 @@ namespace Ars.Common.OpcUaTool.Core
 
             for (int i = 0; i < deviceCores.Count; i++)
             {
-                deviceCores[i].StartRead( );
+                deviceCores[i].StartRead(openRealTimeAcquisite);
             }
         }
-        
+
+        public void ServerClose()
+        {
+            foreach (var deviceCore in deviceCores)
+            {
+                deviceCore.QuitDevice();
+            }
+        }
+
 
         private void SimplifyServer_ReceiveStringEvent( AppSession session, HslCommunication.NetHandle handle, string data )
         {

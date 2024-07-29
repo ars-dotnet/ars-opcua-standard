@@ -1128,6 +1128,12 @@ namespace Opc.Ua.Server
             {
                 ValidateOperationLimits(nodesToRead, OperationLimits.MaxNodesPerRead);
 
+                //ars标记
+                if (nodesToRead[0].NodeId.Identifier.ToString().Equals("Devices/WorkFactory01/WorkShop01/MelsecTest/Int64"))
+                {
+
+                }
+
                 m_serverInternal.NodeManager.Read(
                     context,
                     maxAge,

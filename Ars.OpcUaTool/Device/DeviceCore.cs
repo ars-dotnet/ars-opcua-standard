@@ -12,6 +12,7 @@ using System.Threading;
 using Ars.Common.OpcUaTool.Node.Regular;
 using System.Xml.Linq;
 using Ars.Common.OpcUaTool.Node.Request;
+using System.Runtime.CompilerServices;
 
 namespace Ars.Common.OpcUaTool.Device
 {
@@ -96,8 +97,6 @@ namespace Ars.Common.OpcUaTool.Device
         /// 类型名称
         /// </summary>
         public string TypeName { get; set; }
-
-
         
         /// <summary>
         /// 指示设备是否正常的状态
@@ -113,7 +112,12 @@ namespace Ars.Common.OpcUaTool.Device
         /// 获取或设置系统的状态
         /// </summary>
         public ILogNet LogNet { get => logNet; set => logNet = value; }
-        
+
+        /// <summary>
+        /// 是否开启实际采集
+        /// </summary>
+        public bool OpenRealTimeAcquisite { get; set; }
+
         #endregion
 
         #region Protect Method
@@ -139,10 +143,20 @@ namespace Ars.Common.OpcUaTool.Device
 
         /// <summary>
         /// 启动读取数据
+        /// <param name="openRealTimeAcquisite">是否开启实时数据采集</param>
         /// </summary>
-        public void StartRead( )
+        public void StartRead(bool openRealTimeAcquisite)
         {
-            if (Interlocked.CompareExchange( ref isStarted, 1, 0 ) == 0)
+            OpenRealTimeAcquisite = openRealTimeAcquisite;
+
+            if (!OpenRealTimeAcquisite)
+            {
+                isStarted = 2;
+            }
+
+            BeforStart();
+
+            if (Interlocked.CompareExchange(ref isStarted, 1, 0 ) == 0)
             {
                 thread = new Thread( new ThreadStart( ThreadReadBackground ) );
                 thread.IsBackground = true;
@@ -159,7 +173,12 @@ namespace Ars.Common.OpcUaTool.Device
             if (isStarted == 1)
             {
                 isQuit = 1;
-                autoResetQuit.WaitOne( );
+                autoResetQuit.WaitOne( ); //等待通知线程继续执行
+            }
+
+            if (isStarted == 2)
+            {
+                AfterClose();
             }
         }
 
@@ -290,12 +309,9 @@ namespace Ars.Common.OpcUaTool.Device
         
         private void ThreadReadBackground( )
         {
-            Thread.Sleep( 1000 );           // 默认休息一下下
-            BeforStart( );                  // 需要子类重写
-
             while (isQuit == 0)
             {
-                Thread.Sleep( 100 );
+                Thread.Sleep(1000);
 
                 bool isDataChange = false;           // 数据是否发生了变化
                 foreach (var Request in Requests)
@@ -327,12 +343,48 @@ namespace Ars.Common.OpcUaTool.Device
                 jsonLock.Leave( );
             }
 
-
             AfterClose( );                            // 需要子类重写
             autoResetQuit.Set( );                     // 通知关闭的线程继续
         }
 
         #endregion
+
+        /// <summary>
+        /// 采集一次数据
+        /// </summary>
+        public void ReadOnce()
+        {
+            // 数据是否发生了变化
+            bool isDataChange = false;           
+
+            foreach (var Request in Requests)
+            {
+                if ((DateTime.Now - Request.LastActiveTime).TotalMilliseconds > Request.CaptureInterval)
+                {
+                    Request.LastActiveTime = DateTime.Now;
+
+                    OperateResult<byte[]> read = ReadWriteDevice.Read(Request.Address, Request.Length);
+                    if (read.IsSuccess)
+                    {
+                        IsError = false;
+                        isDataChange = true;
+                        ParseFromRequest(read.Content, Request);
+                        ActiveTime = DateTime.Now;
+                        RequestSuccessCount++;
+                    }
+                    else
+                    {
+                        IsError = true;
+                        RequestFailedCount++;
+                    }
+                }
+            }
+
+            // 更新Json字符串缓存
+            jsonLock.Enter();
+            if (isDataChange) jsonTmp = JObjectData.ToString();
+            jsonLock.Leave();
+        }
 
         #region Private Member
 

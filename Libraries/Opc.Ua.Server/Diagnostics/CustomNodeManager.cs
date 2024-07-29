@@ -1598,6 +1598,14 @@ namespace Opc.Ua.Server
         }
 
         /// <summary>
+        /// 若opc server没有开启实时采集，则此时读取一次PLC数据
+        /// </summary>
+        protected virtual void ReadIfNotRealTimeAcquisition(IList<ReadValueId> nodesToRead)
+        {
+            return;
+        }
+
+        /// <summary>
         /// Reads the value for the specified attribute.
         /// </summary>
         public virtual void Read(
@@ -1613,6 +1621,19 @@ namespace Opc.Ua.Server
 
             lock (Lock)
             {
+                //ars标记
+                if (nodesToRead[0].NodeId.Identifier.ToString().Equals("Devices/WorkFactory01/WorkShop01/MelsecTest/Int64"))
+                {
+
+                }
+
+                if (nodesToRead[0].AttributeId == Attributes.Value &&
+                    nodesToRead[0].NodeId.NamespaceIndex != 0)
+                {
+                    //如果没有开启实时采集，则此时读取一次PLC
+                    ReadIfNotRealTimeAcquisition(nodesToRead);
+                }
+
                 for (int ii = 0; ii < nodesToRead.Count; ii++)
                 {
                     ReadValueId nodeToRead = nodesToRead[ii];
@@ -1654,6 +1675,8 @@ namespace Opc.Ua.Server
                         continue;
                     }
 
+
+                    //ars标记，这里读取
                     // read the attribute value.
                     errors[ii] = handle.Node.ReadAttribute(
                         systemContext,
@@ -1674,11 +1697,6 @@ namespace Opc.Ua.Server
                 {
                     return;
                 }
-            }
-
-            if (nodesToRead[0].NodeId == "ns=2;Devices/WorkFactory01/WorkShop01/MelsecTest/Int16")
-            {
-
             }
 
             // validates the nodes (reads values from the underlying data source if required).

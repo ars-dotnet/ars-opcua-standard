@@ -650,7 +650,7 @@ namespace ConsoleAppNew
         /// <param name="tag">节点名称</param>
         /// <param name="value">值</param>
         /// <returns>if success True,otherwise False</returns>
-        public bool WriteNode<T>(string tag, T value)
+        public (bool,StatusCode) WriteNode<T>(string tag, T value)
         {
             WriteValue valueToWrite = new WriteValue() {
                 NodeId = new NodeId(tag),
@@ -679,10 +679,10 @@ namespace ConsoleAppNew
 
             if (StatusCode.IsBad(results[0]))
             {
-                throw new ServiceResultException(results[0]);
+                return (false, results[0]);
             }
 
-            return !StatusCode.IsBad(results[0]);
+            return (true, results[0]);
         }
 
         /// <summary>
@@ -733,12 +733,12 @@ namespace ConsoleAppNew
         }
 
         /// <summary>
-        /// 所有的节点都写入成功，返回<c>True</c>，否则返回<c>False</c>
+        /// 
         /// </summary>
         /// <param name="tags">节点名称数组</param>
         /// <param name="values">节点的值数据</param>
         /// <returns>所有的是否都写入成功</returns>
-        public bool WriteNodes(string[] tags, object[] values)
+        public IEnumerable<(bool, StatusCode)> WriteNodes(string[] tags, object[] values)
         {
             WriteValueCollection valuesToWrite = new WriteValueCollection();
 
@@ -769,17 +769,20 @@ namespace ConsoleAppNew
             ClientBase.ValidateResponse(results, valuesToWrite);
             ClientBase.ValidateDiagnosticInfos(diagnosticInfos, valuesToWrite);
 
-            bool result = true;
+            IList<(bool, StatusCode)> res = new List<(bool, StatusCode)>(); 
             foreach (var r in results)
             {
                 if (StatusCode.IsBad(r))
                 {
-                    result = false;
-                    break;
+                    res.Add((false, r));
+                }
+                else
+                {
+                    res.Add((true, r));
                 }
             }
 
-            return result;
+            return res;
         }
 
         #endregion Node Write/Read Support
@@ -1390,6 +1393,9 @@ namespace ConsoleAppNew
             if (!StatusCode.IsGood(status))
                 throw new Exception(string.Format("Invalid response from the server. (Response Status: {0})", status));
         }
+
+
+        
 
         #endregion Private Methods
 

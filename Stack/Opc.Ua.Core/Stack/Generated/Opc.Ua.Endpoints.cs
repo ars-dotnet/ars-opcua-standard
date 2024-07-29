@@ -2190,16 +2190,6 @@ namespace Opc.Ua
 
                 response = new ReadResponse();
 
-                if (ServerInstance.GetType().Name == "CustomSessionServer")
-                {
-
-                }
-
-                if (request.NodesToRead[0].NodeId.IdentifierText.Contains("WorkShop01/MelsecTest/Int16"))
-                {
-
-                }
-
                 response.ResponseHeader = ServerInstance.Read(
                    request.RequestHeader,
                    request.MaxAge,
@@ -2430,11 +2420,6 @@ namespace Opc.Ua
                 DiagnosticInfoCollection diagnosticInfos = null;
 
                 response = new WriteResponse();
-
-                if (request.NodesToWrite[0].NodeId.IdentifierText.Contains("WorkShop01/MelsecTest/Int16"))
-                {
-
-                }
 
                 response.ResponseHeader = ServerInstance.Write(
                    request.RequestHeader,

@@ -1,4 +1,5 @@
 using Ars.Common.OpcUaTool.Core;
+using Ars.Common.OpcUaTool.Device;
 using Ars.Common.OpcUaTool.Node.Regular;
 using Ars.Common.OpcUaTool.Node.Request;
 using Ars.Common.OpcUaTool.Node.Server;
@@ -164,7 +165,8 @@ namespace Ars.Common.OpcUaTool.OpcUaCoreOverLoads
 
 
                 dict_BaseDataVariableState = new Dictionary<string, BaseDataVariableState>();
-                dicRegularNodeId = new Dictionary<string, IList<string>>();
+                dicDeviceNodeNameIds = new Dictionary<string, IList<string>>();
+                dicRegularNodeIds = new Dictionary<string, IList<string>>();
                 try
                 {
                     // =========================================================================================
@@ -192,12 +194,11 @@ namespace Ars.Common.OpcUaTool.OpcUaCoreOverLoads
 
                     AddNodeClass(null, element, references);
 
-
                     // 加载配置文件之前设置写入方法
                     sharpNodeServer.LoadByXmlFile("settings.xml");
 
                     // 最后再启动服务器信息
-                    sharpNodeServer.ServerStart(12345);
+                    sharpNodeServer.ServerStart(12345,true);
                 }
                 catch (Exception e)
                 {
@@ -206,6 +207,14 @@ namespace Ars.Common.OpcUaTool.OpcUaCoreOverLoads
                     ExceptionDispatchInfo.Capture(e).Throw();
                 }
             }
+        }
+
+        /// <summary>
+        /// Frees any resources allocated for the address space.
+        /// </summary>
+        public override void DeleteAddressSpace()
+        {
+            sharpNodeServer.ServerClose();
         }
 
         private void AddNodeClass(NodeState? parent, XElement nodeClass, IList<IReference> references)
@@ -421,15 +430,29 @@ namespace Ars.Common.OpcUaTool.OpcUaCoreOverLoads
                 {
                     dict_BaseDataVariableState.Add(dataVariableState.NodeId.ToString(), dataVariableState);
 
-                    if (dicRegularNodeId.TryGetValue(deviceRequest.PraseRegularCode,out var values))
+                    string deviceNodeName = parent.NodeId.ToString().Substring(parent.NodeId.ToString().LastIndexOf("/") + 1);
+
+                    if (dicDeviceNodeNameIds.TryGetValue(deviceNodeName, out var values))
                     {
                         values.Add(dataVariableState.NodeId.ToString());
                     }
                     else
                     {
-                        dicRegularNodeId.Add(
-                            deviceRequest.PraseRegularCode,
+                        dicDeviceNodeNameIds.Add(
+                            deviceNodeName,
                             new List<string> { dataVariableState.NodeId.ToString()}
+                        );
+                    }
+
+                    if (dicRegularNodeIds.TryGetValue(deviceRequest.PraseRegularCode, out var valuess))
+                    {
+                        valuess.Add(dataVariableState.NodeId.ToString());
+                    }
+                    else
+                    {
+                        dicRegularNodeIds.Add(
+                            deviceRequest.PraseRegularCode,
+                            new List<string> { dataVariableState.NodeId.ToString() }
                         );
                     }
                 }
@@ -1186,16 +1209,6 @@ namespace Ars.Common.OpcUaTool.OpcUaCoreOverLoads
             }
         }
 
-        /// <summary>
-        /// Frees any resources allocated for the address space.
-        /// </summary>
-        public override void DeleteAddressSpace()
-        {
-            lock (Lock)
-            {
-                // TBD
-            }
-        }
 
         /// <summary>
         /// Returns a unique handle for the node.
@@ -1256,13 +1269,36 @@ namespace Ars.Common.OpcUaTool.OpcUaCoreOverLoads
         #region SharpNodeSettings Server
 
         private SharpNodeServer sharpNodeServer = null;
-        private Dictionary<string, List<RegularItemNode>> dicRegularItemNode = null;
+        
         private Dictionary<string, BaseDataVariableState> dict_BaseDataVariableState;    // 节点管理器
-        private Dictionary<string, IList<string>> dicRegularNodeId; //regular-nodeid关系数据 
-
+        private Dictionary<string, IList<string>> dicDeviceNodeNameIds; //deviceNodeName-nodeid关系数据 
+        private Dictionary<string, List<RegularItemNode>> dicRegularItemNode;//regular-itemnode关系数据
+        private Dictionary<string, IList<string>> dicRegularNodeIds;//deviceNodeName-regular关系数据 
         #endregion
 
         #region Overrides
+
+        /// <summary>
+        /// 如果没有开启实时采集，则获取底层系统的值
+        /// </summary>
+        protected override void ReadIfNotRealTimeAcquisition(IList<ReadValueId> nodesToRead)
+        {
+            HashSet<DeviceCore> hash = new HashSet<DeviceCore>();
+
+            for (int ii = 0; ii < nodesToRead.Count; ii++)
+            {
+                ReadValueId readValueId = nodesToRead[ii];
+
+                DeviceCore? deviceCore = GetDeviceCoreByNodeId(readValueId.NodeId.ToString());
+
+                if (null != deviceCore && !deviceCore.OpenRealTimeAcquisite && hash.Add(deviceCore))
+                {
+                    deviceCore.ReadOnce();
+                }
+            }
+
+            hash.Clear();
+        }
 
         //将值写入底层系统
         protected override void Write(ServerSystemContext context, IList<WriteValue> nodesToWrite, IList<ServiceResult> errors, List<NodeHandle> nodesToValidate, IDictionary<NodeId, NodeState> cache)
@@ -1339,6 +1375,25 @@ namespace Ars.Common.OpcUaTool.OpcUaCoreOverLoads
         #region Private Function
 
         /// <summary>
+        /// 获取设备
+        /// </summary>
+        /// <param name="nodeId"></param>
+        /// <returns></returns>
+        private DeviceCore? GetDeviceCoreByNodeId(string nodeId)
+        {
+            var deviceCodeName = GetDeviceNodeName(nodeId);
+
+            if (string.IsNullOrEmpty(deviceCodeName))
+                return null;
+
+            var deviceCore = sharpNodeServer.deviceCores
+                .Where(r => r.DeviceNodes.Any(t => t.Equals(deviceCodeName)))
+                .FirstOrDefault();
+
+            return deviceCore;
+        }
+
+        /// <summary>
         /// 获取设备访问实例
         /// </summary>
         /// <param name="nodeId"></param>
@@ -1347,16 +1402,25 @@ namespace Ars.Common.OpcUaTool.OpcUaCoreOverLoads
         {
             address = string.Empty;
 
+            var deviceCodeName = GetDeviceNodeName(nodeId);
+
+            if (string.IsNullOrEmpty(deviceCodeName))
+                return null;
+
             var regular = GetRegularName(nodeId);
 
             if (string.IsNullOrEmpty(regular))
                 return null;
 
             var deviceCore = sharpNodeServer.deviceCores
-                .Where(r => r.Requests.Any(t => t.PraseRegularCode.Equals(regular)))
+                .Where(r => r.DeviceNodes.Any(t => t.Equals(deviceCodeName)))
                 .FirstOrDefault();
 
-            address = deviceCore.Requests[0].Address;
+            var request = deviceCore.Requests
+                .Where(r => r.PraseRegularCode.Equals(regular))
+                .FirstOrDefault();
+
+            address = request.Address;
 
             return deviceCore?.ReadWriteDevice;
         }
@@ -1366,9 +1430,16 @@ namespace Ars.Common.OpcUaTool.OpcUaCoreOverLoads
         /// </summary>
         /// <param name="nodeId"></param>
         /// <returns></returns>
+        private string? GetDeviceNodeName(string nodeId)
+        {
+            var deviceNodeName = dicDeviceNodeNameIds.Where(r => r.Value.Any(t => t.Equals(nodeId))).FirstOrDefault().Key;
+
+            return deviceNodeName;
+        }
+
         private string? GetRegularName(string nodeId)
         {
-            var regular = dicRegularNodeId.Where(r => r.Value.Any(t => t.Equals(nodeId))).FirstOrDefault().Key;
+            var regular = dicRegularNodeIds.Where(r => r.Value.Any(t => t.Equals(nodeId))).FirstOrDefault().Key;
 
             return regular;
         }

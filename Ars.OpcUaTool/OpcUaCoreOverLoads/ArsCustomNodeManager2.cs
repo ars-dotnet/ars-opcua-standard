@@ -4,13 +4,13 @@ using Ars.Common.OpcUaTool.Node.Regular;
 using Ars.Common.OpcUaTool.Node.Request;
 using Ars.Common.OpcUaTool.Node.Server;
 using Ars.OpcUaTool.Extensions;
-using HslCommunication;
-using HslCommunication.Core;
 using Opc.Ua;
 using Opc.Ua.Server;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Xml.Linq;
+using TOPRO.HSL;
+using TOPRO.HSL.Core;
 using Range = Opc.Ua.Range;
 
 namespace Ars.Common.OpcUaTool.OpcUaCoreOverLoads

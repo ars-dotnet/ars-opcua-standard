@@ -63,20 +63,24 @@
              bool => 1
              bool[] => [01011001]
 			-->
-      <RegularItemNode Name="bool" Description="" Index="3" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="bool[]" Description="" Index="0" TypeCode="1" TypeLength="8" />
-      <RegularItemNode Name="Int16" Description="" Index="2" TypeCode="3" TypeLength="3" />
-      <RegularItemNode Name="UInt16" Description="" Index="4" TypeCode="4" TypeLength="1" />
+      <RegularItemNode Name="error1" Description="异常1" Index="0" TypeCode="1" TypeLength="1" />
+      <RegularItemNode Name="error2" Description="异常1" Index="1" TypeCode="1" TypeLength="1" />
+      <RegularItemNode Name="error3" Description="异常1" Index="2" TypeCode="1" TypeLength="1" />
+      <RegularItemNode Name="error4" Description="异常1" Index="3" TypeCode="1" TypeLength="1" />
+      <RegularItemNode Name="error5" Description="异常1" Index="4" TypeCode="1" TypeLength="1" />
+      <RegularItemNode Name="error6" Description="异常1" Index="5" TypeCode="1" TypeLength="1" />
+      <RegularItemNode Name="error7" Description="异常1" Index="6" TypeCode="1" TypeLength="1" />
+      <RegularItemNode Name="error8" Description="异常1" Index="7" TypeCode="1" TypeLength="1" />
+      <RegularItemNode Name="error9" Description="异常1" Index="8" TypeCode="1" TypeLength="1" />
+      <RegularItemNode Name="error10" Description="异常1" Index="9" TypeCode="1" TypeLength="1" />
+      <RegularItemNode Name="error11" Description="异常1" Index="10" TypeCode="1" TypeLength="1" />
+      <RegularItemNode Name="error12" Description="异常1" Index="11" TypeCode="1" TypeLength="1" />
+      <RegularItemNode Name="error13" Description="异常1" Index="12" TypeCode="1" TypeLength="1" />
+      <RegularItemNode Name="error14" Description="异常1" Index="13" TypeCode="1" TypeLength="1" />
+      <RegularItemNode Name="error15" Description="异常1" Index="14" TypeCode="1" TypeLength="1" />
+      <RegularItemNode Name="error16" Description="异常1" Index="15" TypeCode="1" TypeLength="1" />
+      <RegularItemNode Name="errorAll" Description="异常点位" Index="0" TypeCode="1" TypeLength="16" />
 
-      <RegularItemNode Name="Int32" Description="" Index="6" TypeCode="5" TypeLength="1" />
-      <RegularItemNode Name="UInt32" Description="" Index="10" TypeCode="6" TypeLength="1" />
-      <RegularItemNode Name="Int64" Description="" Index="14" TypeCode="7" TypeLength="1" />
-      <RegularItemNode Name="UInt64" Description="" Index="22" TypeCode="8" TypeLength="1" />
-
-      <RegularItemNode Name="Float" Description="" Index="30" TypeCode="9" TypeLength="1" />
-      <RegularItemNode Name="Double" Description="" Index="34" TypeCode="10" TypeLength="1" />
-
-      <RegularItemNode Name="String" Description="" Index="50" TypeCode="11" TypeLength="8" />
     </RegularNode>
     <RegularNode Name="Regular02" Description="">
       <RegularItemNode Name="温度" Description="" Index="300" TypeCode="3" TypeLength="1" />

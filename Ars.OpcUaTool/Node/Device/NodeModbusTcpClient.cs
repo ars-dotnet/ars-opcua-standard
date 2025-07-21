@@ -1,10 +1,10 @@
-﻿using Ars.Common.OpcUaTool.Node.NodeBase;
+using Ars.Common.OpcUaTool.Node.NodeBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
-using HslCommunication.Core;
+using TOPRO.HSL.Core;
 
 namespace Ars.Common.OpcUaTool.Node.Device
 {
@@ -61,7 +61,7 @@ namespace Ars.Common.OpcUaTool.Node.Device
         /// <summary>
         /// 字节分析是否颠倒
         /// </summary>
-        public int DataFormat { get; set; } = (int)HslCommunication.Core.DataFormat.DCBA;
+        public int DataFormat { get; set; } = (int)TOPRO.HSL.Core.DataFormat.DCBA;
 
         /// <summary>
         /// 字符串分析是否颠倒

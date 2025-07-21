@@ -1,4 +1,4 @@
-﻿using Ars.Common.OpcUaTool.Node.NodeBase;
+using Ars.Common.OpcUaTool.Node.NodeBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +24,8 @@ namespace Ars.Common.OpcUaTool.Node.Request
             Address = "123";
             Length = 10;
             CaptureInterval = 1000;
-            PraseRegularCode = "ABCDEFG";
+            //PraseRegularCode = "ABCDEFG";
+            PraseRegularCode = "GFEDCBA";
             NodeType = NodeClassInfo.DeviceRequest;
             NodeHead = "DeviceRequest";
             LastActiveTime = DateTime.Now.AddDays( -1 );           // 自动设置为一天以前

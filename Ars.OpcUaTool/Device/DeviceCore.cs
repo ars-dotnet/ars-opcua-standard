@@ -1,7 +1,3 @@
-using HslCommunication;
-using HslCommunication.Core;
-using HslCommunication.Core.Net;
-using HslCommunication.LogNet;
 using Newtonsoft.Json.Linq;
 using Ars.Common.OpcUaTool.Node.Device;
 using System;
@@ -13,6 +9,10 @@ using Ars.Common.OpcUaTool.Node.Regular;
 using System.Xml.Linq;
 using Ars.Common.OpcUaTool.Node.Request;
 using System.Runtime.CompilerServices;
+using TOPRO.HSL.Core;
+using TOPRO.HSL.LogNet;
+using TOPRO.HSL;
+using TOPRO.HSL.Core.Net;
 
 namespace Ars.Common.OpcUaTool.Device
 {
@@ -407,7 +407,7 @@ namespace Ars.Common.OpcUaTool.Device
         {
             foreach (var regular in request.RegularNodes)
             {
-                dynamic value = regular.GetValue( data, ByteTransform );
+                dynamic value = regular.GetValue( data, ByteTransform);
 
                 jsonLock.Enter( );
                 if (regular.RegularCode != RegularNodeTypeItem.StringAscii.Code &&

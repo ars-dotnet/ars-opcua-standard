@@ -1455,6 +1455,11 @@
             browse name.
             </remarks>
         </member>
+        <member name="M:Opc.Ua.Server.CustomNodeManager2.ReadIfNotRealTimeAcquisition(System.Collections.Generic.IList{Opc.Ua.ReadValueId})">
+            <summary>
+            若opc server没有开启实时采集，则此时读取一次PLC数据
+            </summary>
+        </member>
         <member name="M:Opc.Ua.Server.CustomNodeManager2.Read(Opc.Ua.Server.OperationContext,System.Double,System.Collections.Generic.IList{Opc.Ua.ReadValueId},System.Collections.Generic.IList{Opc.Ua.DataValue},System.Collections.Generic.IList{Opc.Ua.ServiceResult})">
             <summary>
             Reads the value for the specified attribute.

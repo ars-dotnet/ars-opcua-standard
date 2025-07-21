@@ -24,8 +24,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="HslCommunication">
-      <HintPath>..\packages\HslCommunication.6.0.0\lib\netstandard2.0\HslCommunication.dll</HintPath>
+    <Reference Include="TOPRO.HSL">
+      <HintPath>..\packages\netstandard2.0\TOPRO.HSL.dll</HintPath>
     </Reference>
   </ItemGroup>
 

@@ -1,4 +1,4 @@
-﻿using Ars.Common.OpcUaTool.Node.NodeBase;
+using Ars.Common.OpcUaTool.Node.NodeBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +52,7 @@ namespace Ars.Common.OpcUaTool.Node.Device
         /// <summary>
         /// 字节分析时的数据格式
         /// </summary>
-        public int DataFormat { get; set; } = (int)HslCommunication.Core.DataFormat.ABCD;
+        public int DataFormat { get; set; } = (int)TOPRO.HSL.Core.DataFormat.ABCD;
 
         /// <summary>
         /// 字符串分析是否颠倒

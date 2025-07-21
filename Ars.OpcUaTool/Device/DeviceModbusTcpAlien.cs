@@ -1,5 +1,3 @@
-using HslCommunication.Core.Net;
-using HslCommunication.ModBus;
 using Ars.Common.OpcUaTool.Node.Device;
 using System;
 using System.Collections.Generic;
@@ -7,7 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using HslCommunication;
+using TOPRO.HSL.ModBus;
+using TOPRO.HSL.Core.Net;
+using TOPRO.HSL.Core;
 
 namespace Ars.Common.OpcUaTool.Device
 {
@@ -32,7 +32,7 @@ namespace Ars.Common.OpcUaTool.Device
             modbusTcp = new ModbusTcpNet( string.Empty, 502, modbusTcpAline.Station );
             modbusTcp.AddressStartWithZero = modbusTcpAline.IsAddressStartWithZero;
             modbusTcp.ConnectionId = modbusTcpAline.DTU;
-            modbusTcp.DataFormat = (HslCommunication.Core.DataFormat)modbusTcpAline.DataFormat;
+            modbusTcp.DataFormat = (DataFormat)modbusTcpAline.DataFormat;
             modbusTcp.IsStringReverse = modbusTcpAline.IsStringReverse;
 
 

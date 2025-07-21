@@ -1,4 +1,3 @@
-using HslCommunication.Profinet.Omron;
 using Ars.Common.OpcUaTool.Node.Device;
 using System;
 using System.Collections.Generic;
@@ -6,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using HslCommunication;
+using TOPRO.HSL.Profinet.Omron;
 
 namespace Ars.Common.OpcUaTool.Device
 {

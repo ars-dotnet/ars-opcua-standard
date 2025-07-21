@@ -1,10 +1,10 @@
-using HslCommunication.Core;
 using Ars.Common.OpcUaTool.Node.NodeBase;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
+using TOPRO.HSL.Core;
 
 namespace Ars.Common.OpcUaTool.Node.Regular
 {
@@ -138,23 +138,25 @@ namespace Ars.Common.OpcUaTool.Node.Regular
         /// <returns></returns>
         public dynamic GetValue( byte[] data, IByteTransform byteTransform )
         {
-
             if (RegularCode == RegularNodeTypeItem.Bool.Code)
             {
+                data = byteTransform.TransByteByType(data, 0, data.Length);
+
+                bool[] tmp = byteTransform.TransBool(data, 0, data.Length);
+
                 if (TypeLength == 1)
                 {
-                    //bool[] tmp = HslCommunication.BasicFramework.SoftBasic.ByteToBoolArray( data, data.Length * 8 );
-                    bool[] tmp = ByteToBoolArray( data, data.Length * 8 );
                     return tmp[Index];
                 }
                 else
                 {
-                    bool[] tmp = HslCommunication.BasicFramework.SoftBasic.ByteToBoolArray( data, data.Length * 8 );
                     bool[] array = new bool[TypeLength];
+
                     for (int i = 0; i < array.Length; i++)
                     {
                         array[i] = tmp[Index + i];
                     }
+
                     return array;
                 }
             }

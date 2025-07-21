@@ -7,13 +7,15 @@ using System.IO;
 using System.Xml.Linq;
 using Ars.Common.OpcUaTool.Node.NodeBase;
 using Ars.Common.OpcUaTool.Node.Regular;
-using HslCommunication.ModBus;
 using Ars.Common.OpcUaTool.Node.Server;
-using HslCommunication.LogNet;
-using HslCommunication.Core.Net;
 using System.Threading;
-using HslCommunication.Enthernet;
 using Ars.Common.OpcUaTool.Device;
+using TOPRO.HSL.Core.Net;
+using TOPRO.HSL.ModBus;
+using TOPRO.HSL.LogNet;
+using TOPRO.HSL.Enthernet;
+using TOPRO.HSL.Core;
+using TOPRO.HSL;
 
 namespace Ars.Common.OpcUaTool.Core
 {
@@ -32,7 +34,7 @@ namespace Ars.Common.OpcUaTool.Core
             networkAliens = new List<NetworkAlienClient>( );
             modbusTcpServers = new List<ModbusTcpServer>( );
             dictDeviceCores = new Dictionary<string, DeviceCore>( );
-            settingsLock = new HslCommunication.Core.SimpleHybirdLock( );
+            settingsLock = new SimpleHybirdLock( );
         }
 
 
@@ -64,7 +66,7 @@ namespace Ars.Common.OpcUaTool.Core
         }
 
 
-        private void SimplifyServer_ReceiveStringEvent( AppSession session, HslCommunication.NetHandle handle, string data )
+        private void SimplifyServer_ReceiveStringEvent( AppSession session, NetHandle handle, string data )
         {
             if (handle == 0)
             {
@@ -294,7 +296,7 @@ namespace Ars.Common.OpcUaTool.Core
         private Dictionary<string, DeviceCore> dictDeviceCores;                            // 所有的设备客户端词典列表，加速设备查找速度
         private List<NetworkAlienClient> networkAliens;                                    // 所有的异形客户端的列表
         private AutoResetEvent autoResetQuit;                                              // 退出系统的时候的同步锁
-        private HslCommunication.Core.SimpleHybirdLock settingsLock;                       // 配置文件加载的锁
+        private SimpleHybirdLock settingsLock;                       // 配置文件加载的锁
         private NetSimplifyServer simplifyServer;                                          // 同步数据访问服务器
         private XElement xElementSettings;                                                 // 全部的配置文件信息
 

@@ -303,6 +303,7 @@ namespace Opc.Ua.Server
             DataValue value = new DataValue();
 
             value.Value = null;
+            value.Description = node.Description.ToString();
             value.ServerTimestamp = DateTime.UtcNow;
             value.SourceTimestamp = DateTime.MinValue;
             value.StatusCode = StatusCodes.Good;

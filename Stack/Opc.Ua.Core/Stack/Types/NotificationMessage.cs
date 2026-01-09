@@ -23,6 +23,12 @@ namespace Opc.Ua
     public partial class NotificationMessage
     {
         #region Public Interface
+
+        /// <summary>
+        /// 描述
+        /// </summary>
+        public string Description { get; set; }
+
         /// <summary>
         /// The string table that was received with the message.
         /// </summary>

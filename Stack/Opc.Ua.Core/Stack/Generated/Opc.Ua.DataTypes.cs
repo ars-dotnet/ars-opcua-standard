@@ -59281,6 +59281,8 @@ namespace Opc.Ua
             decoder.PushNamespace(Opc.Ua.Namespaces.OpcUaXsd);
 
             ClientHandle = decoder.ReadUInt32("ClientHandle");
+
+            //ars这里赋值
             Value = decoder.ReadDataValue("Value");
 
             decoder.PopNamespace();

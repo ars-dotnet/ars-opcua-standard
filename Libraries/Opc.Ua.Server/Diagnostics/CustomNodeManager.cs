@@ -1622,7 +1622,7 @@ namespace Opc.Ua.Server
             lock (Lock)
             {
                 //ars标记
-                if (nodesToRead[0].NodeId.Identifier.ToString().Equals("Devices/WorkFactory01/WorkShop01/MelsecTest/Int64"))
+                if (nodesToRead[0].NodeId.Identifier.ToString().Equals("devices/guanghe/mass_comb/a7/D100.0"))
                 {
 
                 }

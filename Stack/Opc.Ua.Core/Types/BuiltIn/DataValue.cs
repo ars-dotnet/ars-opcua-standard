@@ -391,6 +391,11 @@ namespace Opc.Ua
         }
 
         /// <summary>
+        /// 描述
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
         /// The status code associated with the value.
         /// </summary>
         /// <remarks>

@@ -160,48 +160,59 @@ namespace Ars.Common.OpcUaTool.Node.Regular
                     return array;
                 }
             }
+            else if (RegularCode == RegularNodeTypeItem.Byte.Code)
+            {
+                if (TypeLength == 1)
+                {
+                    return byteTransform.TransByte(data, Index);
+                }
+                else
+                {
+                    return byteTransform.TransByte(data, Index, TypeLength);
+                }
+            }
             else if (RegularCode == RegularNodeTypeItem.Int16.Code)
             {
                 if (TypeLength == 1)
                 {
-                    return byteTransform.TransInt16( data, Index );
+                    return byteTransform.TransInt16(data, Index);
                 }
                 else
                 {
-                    return byteTransform.TransInt16( data, Index, TypeLength );
+                    return byteTransform.TransInt16(data, Index, TypeLength);
                 }
             }
             else if (RegularCode == RegularNodeTypeItem.UInt16.Code)
             {
                 if (TypeLength == 1)
                 {
-                    return byteTransform.TransUInt16( data, Index );
+                    return byteTransform.TransUInt16(data, Index);
                 }
                 else
                 {
-                    return byteTransform.TransUInt16( data, Index, TypeLength );
+                    return byteTransform.TransUInt16(data, Index, TypeLength);
                 }
             }
             else if (RegularCode == RegularNodeTypeItem.Int32.Code)
             {
                 if (TypeLength == 1)
                 {
-                    return byteTransform.TransInt32( data, Index );
+                    return byteTransform.TransInt32(data, Index);
                 }
                 else
                 {
-                    return byteTransform.TransInt32( data, Index, TypeLength );
+                    return byteTransform.TransInt32(data, Index, TypeLength);
                 }
             }
             else if (RegularCode == RegularNodeTypeItem.UInt32.Code)
             {
                 if (TypeLength == 1)
                 {
-                    return byteTransform.TransUInt32( data, Index );
+                    return byteTransform.TransUInt32(data, Index);
                 }
                 else
                 {
-                    return byteTransform.TransUInt32( data, Index, TypeLength );
+                    return byteTransform.TransUInt32(data, Index, TypeLength);
                 }
             }
             else if (RegularCode == RegularNodeTypeItem.Int64.Code)
@@ -212,49 +223,49 @@ namespace Ars.Common.OpcUaTool.Node.Regular
                 }
                 else
                 {
-                    return byteTransform.TransInt64( data, Index, TypeLength );
+                    return byteTransform.TransInt64(data, Index, TypeLength);
                 }
             }
             else if (RegularCode == RegularNodeTypeItem.UInt64.Code)
             {
                 if (TypeLength == 1)
                 {
-                    return byteTransform.TransUInt64( data, Index );
+                    return byteTransform.TransUInt64(data, Index);
                 }
                 else
                 {
-                    return byteTransform.TransUInt64( data, Index, TypeLength );
+                    return byteTransform.TransUInt64(data, Index, TypeLength);
                 }
             }
             else if (RegularCode == RegularNodeTypeItem.Float.Code)
             {
                 if (TypeLength == 1)
                 {
-                    return byteTransform.TransSingle( data, Index );
+                    return byteTransform.TransSingle(data, Index);
                 }
                 else
                 {
-                    return byteTransform.TransSingle( data, Index, TypeLength );
+                    return byteTransform.TransSingle(data, Index, TypeLength);
                 }
             }
             else if (RegularCode == RegularNodeTypeItem.Double.Code)
             {
                 if (TypeLength == 1)
                 {
-                    return byteTransform.TransDouble( data, Index );
+                    return byteTransform.TransDouble(data, Index);
                 }
                 else
                 {
-                    return byteTransform.TransDouble( data, Index, TypeLength );
+                    return byteTransform.TransDouble(data, Index, TypeLength);
                 }
             }
             else if (RegularCode == RegularNodeTypeItem.StringAscii.Code)
             {
-                return Encoding.ASCII.GetString( data, Index, TypeLength );
+                return Encoding.ASCII.GetString(data, Index, TypeLength);
             }
             else
             {
-                throw new Exception( "Not Supported Data Type" );
+                throw new Exception("Not Supported Data Type");
             }
         }
 

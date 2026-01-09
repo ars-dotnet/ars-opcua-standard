@@ -1,92 +1,62 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Settings>
-  <NodeClass Name="Devices" Description="所有的设备的集合对象">
-    <NodeClass Name="WorkFactory01" Description="">
-       <!--DeviceType[1:三菱Qna-3E; 10:modbus-tcp; 20:异形Modbus-Tcp; 30:西门子; 40:欧姆龙; 50:SimplifyNet服务器]  
-       DataFormat[0:ABCD; 1:BADC; 2:CDAB; 3:DCBA]--> 
-      <NodeClass Name="WorkShop01" Description="">
-        <DeviceNode Name="MelsecTest" Description="三菱PLC" DeviceType="1" IpAddress="127.0.0.1" Port="5007" ConnectTimeOut="2000" CreateTime="2018/8/12 9:26:27" InstallationDate="2018/8/12 9:26:27">
-          <DeviceRequest Name="数据请求" Description="一次完整的数据请求" Address="D100" Length="8" CaptureInterval="1000" PraseRegularCode="Regular01" />
+  <NodeClass Name="devices" Description="所有的设备的集合对象">
+    <NodeClass Name="guanghe" Description="">
+      <!--DeviceType[1:三菱Qna-3E; 10:modbus-tcp; 20:异形Modbus-Tcp; 30:西门子; 40:欧姆龙; 50:SimplifyNet服务器]  
+       DataFormat[0:ABCD; 1:BADC; 2:CDAB; 3:DCBA]-->
+      <NodeClass Name="mass_comb" Description="mass叠合台异常点位采集">
+        <DeviceNode Name="a7" Description="" DeviceType="1" IpAddress="127.0.0.1" Port="6000" ConnectTimeOut="2000" CreateTime="2018/8/12 9:26:27" InstallationDate="2018/8/12 9:26:27">
+          <DeviceRequest Name="数据请求" Description="一次完整的数据请求" Address="F0" Length="52" CaptureInterval="1000" PraseRegularCode="Regular01" />
         </DeviceNode>
       </NodeClass>
-      <NodeClass Name="WorkShop02" Description="">
-        <DeviceNode Name="ModbusTcpTest" Description="这是描述" DeviceType="10" ConnectTimeOut="1000" CreateTime="2018/8/9 19:58:49" InstallationDate="2018/8/9 19:58:49" IpAddress="127.0.0.1" Port="502" Station="1" IsAddressStartWithZero="true" DataFormat="0" IsStringReverse="false">
-          <DeviceRequest Name="数据请求" Description="一次完整的数据请求" Address="0" Length="8" CaptureInterval="1000" PraseRegularCode="Regular01" />
-        </DeviceNode>
-      </NodeClass>
-    </NodeClass>
-    <NodeClass Name="分厂二" Description="位于西南方">
-      <NodeClass Name="车间三" Description="">
-        <DeviceNode Name="Simens" Description="" DeviceType="30" IpAddress="127.0.0.1" Port="102" ConnectTimeOut="2000" PlcType="S7-1200" CreateTime="2018/8/12 9:26:27" InstallationDate="2018/8/12 9:26:27">
-          <DeviceRequest Name="数据请求" Description="一次完整的数据请求" Address="DB100.DBB100" Length="8" CaptureInterval="1000" PraseRegularCode="Regular01" />
+      <NodeClass Name="pin_comb_line" Description="pin叠合台异常点位采集">
+        <DeviceNode Name="pin_comb" Description="" DeviceType="1" IpAddress="127.0.0.1" Port="6001" ConnectTimeOut="2000" CreateTime="2018/8/12 9:26:27" InstallationDate="2018/8/12 9:26:27">
+          <DeviceRequest Name="数据请求" Description="一次完整的数据请求" Address="F0" Length="22" CaptureInterval="1000" PraseRegularCode="Regular02" />
         </DeviceNode>
       </NodeClass>
     </NodeClass>
   </NodeClass>
-  <!--<NodeClass Name="Server" Description="所有挂载的服务器">
-    <ServerNode Name="异形服务器" Description="这是一个异形服务器" CreateTime="2018/8/8 13:29:30" Port="1234" ServerType="2" Password="" />
-  </NodeClass>-->
   <NodeClass Name="Regular" Description="所有的解析规则的信息">
     <RegularNode Name="Regular01" Description="">
       <!--       
-			    TypeCode(几个字节)
+			  0.TypeCode(数据类型 和 字节数)
 			    1: Bool(1/8);  2: Byte(1);    3: Int16(2);        4: UInt16(2);
                 5: Int32(4); 6: UInt32(4);  7: Int64(8);        8: UInt64(8);
                 9: Float(4); 10: Double(8); 11: StringAscii; 12:StringUnicode;
                 13: StringUtf8;
-				
-				
-        1.DeviceRequest.Address代表开始读取的点位
+
+        1.DeviceRequest.Address代表开始读取的点位;DeviceRequest.Length代表读多少个字节
         
         2.Index
            2.1 bool类型:代表bit[]开始的索引下标
            2.2 其它类型:代表byte[]开始的索引下标
 				
-				3.TypeLength
+		    3.TypeLength
            3.1 bool类型:位的长度
            3.2 其它类型:字节的倍数
            3.3 string类型:字节的长度
-        
-        4.eg:
-                   |Int16(包括D101,D102,D103) |
-                   |       | UInt16 |          Int32   |
-        点位  D100 | D101  | D102   |      D103 + D104  |
-        索引  0  1 | 2  3  | 4  5   |      6  7  8  9   |
-        
-        4.测试bool:
-             D100写666 [00000010 10011010]
-             D101写666 [00000010 10011010]
-             
-             读出来每个字节的位是从低位到高位的,也就是颠倒的
-             D100 [01011001 01000000]
-             D101 [01011001 01000000]
-             bool => 1
-             bool[] => [01011001]
 			-->
-      <RegularItemNode Name="error1" Description="异常1" Index="0" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error2" Description="异常1" Index="1" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error3" Description="异常1" Index="2" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error4" Description="异常1" Index="3" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error5" Description="异常1" Index="4" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error6" Description="异常1" Index="5" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error7" Description="异常1" Index="6" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error8" Description="异常1" Index="7" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error9" Description="异常1" Index="8" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error10" Description="异常1" Index="9" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error11" Description="异常1" Index="10" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error12" Description="异常1" Index="11" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error13" Description="异常1" Index="12" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error14" Description="异常1" Index="13" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error15" Description="异常1" Index="14" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error16" Description="异常1" Index="15" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="errorAll" Description="异常点位" Index="0" TypeCode="1" TypeLength="16" />
-      <RegularItemNode Name="Int16" Description="" Index="0" TypeCode="3" TypeLength="1" />
+      <RegularItemNode Name="F0" Description="异常123" Index="0" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F1" Description="异常123" Index="1" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F3" Description="异常1" Index="3" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F49" Description="异常1" Index="49" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F50" Description="异常1" Index="50" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F51" Description="异常1" Index="51" TypeCode="2" TypeLength="1" />
 
     </RegularNode>
+
     <RegularNode Name="Regular02" Description="">
-      <RegularItemNode Name="温度" Description="" Index="300" TypeCode="3" TypeLength="1" />
-      <RegularItemNode Name="压力" Description="" Index="310" TypeCode="3" TypeLength="1" />
-      <RegularItemNode Name="条码" Description="" Index="320" TypeCode="11" TypeLength="10" />
+      <RegularItemNode Name="F0" Description="异常123" Index="0" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F1" Description="异常1" Index="1" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F2" Description="异常1" Index="2" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F3" Description="异常1" Index="3" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F4" Description="异常1" Index="4" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F5" Description="异常1" Index="5" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F6" Description="异常1" Index="6" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F7" Description="异常1" Index="7" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F8" Description="异常1" Index="8" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F9" Description="异常1" Index="9" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F10" Description="异常1" Index="10" TypeCode="2" TypeLength="1" />
     </RegularNode>
   </NodeClass>
 </Settings>

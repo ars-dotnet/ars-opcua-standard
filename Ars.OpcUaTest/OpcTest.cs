@@ -15,23 +15,28 @@ namespace Ars.OpcUaTest
 
         static string[] combTags = new string[]
         {
-            "ns=2;Devices/WorkFactory01/WorkShop01/MelsecTest/error1", //D107
-            "ns=2;Devices/WorkFactory01/WorkShop01/MelsecTest/error2", //D107
-            "ns=2;Devices/WorkFactory01/WorkShop01/MelsecTest/error3", //D107
-            "ns=2;Devices/WorkFactory01/WorkShop01/MelsecTest/error4", //D107
-            "ns=2;Devices/WorkFactory01/WorkShop01/MelsecTest/error5", //D107
-            "ns=2;Devices/WorkFactory01/WorkShop01/MelsecTest/error6", //D107
-            "ns=2;Devices/WorkFactory01/WorkShop01/MelsecTest/error7", //D107
-            "ns=2;Devices/WorkFactory01/WorkShop01/MelsecTest/error8", //D107
-            "ns=2;Devices/WorkFactory01/WorkShop01/MelsecTest/error9", //D107
-            "ns=2;Devices/WorkFactory01/WorkShop01/MelsecTest/error10", //D107
-            "ns=2;Devices/WorkFactory01/WorkShop01/MelsecTest/error11", //D107
-            "ns=2;Devices/WorkFactory01/WorkShop01/MelsecTest/error12", //D107
-            "ns=2;Devices/WorkFactory01/WorkShop01/MelsecTest/error13", //D107
-            "ns=2;Devices/WorkFactory01/WorkShop01/MelsecTest/error14", //D107
-            "ns=2;Devices/WorkFactory01/WorkShop01/MelsecTest/error15", //D107
-            "ns=2;Devices/WorkFactory01/WorkShop01/MelsecTest/error16", //D107
-            "ns=2;Devices/WorkFactory01/WorkShop01/MelsecTest/error17", //D107
+            "ns=2;devices/guanghe/mass_comb/a7/F0", //D107
+            "ns=2;devices/guanghe/mass_comb/a7/F1", //D107
+            "ns=2;devices/guanghe/mass_comb/a7/F3", //D107
+            "ns=2;devices/guanghe/mass_comb/a7/F49", //D107
+            "ns=2;devices/guanghe/mass_comb/a7/F50", //D107
+            "ns=2;devices/guanghe/mass_comb/a7/F51", //D107
+            //"ns=2;devices/guanghe/mass_comb/a7/D100.1", //D107
+            //"ns=2;devices/guanghe/mass_comb/a7/D100.2", //D107
+            //"ns=2;devices/guanghe/mass_comb/a7/D100.3", //D107
+            //"ns=2;devices/guanghe/mass_comb/a7/D100.4", //D107
+            //"ns=2;devices/guanghe/mass_comb/a7/D100.5", //D107
+            //"ns=2;devices/guanghe/mass_comb/a7/D100.6", //D107
+            //"ns=2;devices/guanghe/mass_comb/a7/D100.7", //D107
+            //"ns=2;devices/guanghe/mass_comb/a7/D100.8", //D107
+            //"ns=2;devices/guanghe/mass_comb/a7/D100.9", //D107
+            //"ns=2;devices/guanghe/mass_comb/a7/D100.10", //D107
+            //"ns=2;devices/guanghe/mass_comb/a7/D100.11", //D107
+            //"ns=2;devices/guanghe/mass_comb/a7/D100.12", //D107
+            //"ns=2;devices/guanghe/mass_comb/a7/D100.13", //D107
+            //"ns=2;devices/guanghe/mass_comb/a7/D100.14", //D107
+            //"ns=2;devices/guanghe/mass_comb/a7/D100.15", //D107
+            //"ns=2;devices/guanghe/mass_comb/a7/D100.16", //D107
         };
 
         static string[] RetLineTags = new string[]
@@ -70,7 +75,7 @@ namespace Ars.OpcUaTest
             //PLC值发生变化会订阅到
             opcUaClient.AddSubscription("Comb", combTags, SubCallback);
 
-            opcUaClient.AddSubscription("RetLine", RetLineTags, SubCallback);
+            //opcUaClient.AddSubscription("RetLine", RetLineTags, SubCallback);
 
             while (true)
             {

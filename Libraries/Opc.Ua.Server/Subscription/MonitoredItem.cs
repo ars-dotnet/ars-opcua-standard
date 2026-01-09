@@ -790,6 +790,7 @@ namespace Opc.Ua.Server
 
                     DataValue copy = new DataValue();
 
+                    copy.Description = value.Description;
                     copy.WrappedValue = value.WrappedValue;
                     copy.StatusCode = value.StatusCode;
                     copy.SourceTimestamp = value.SourceTimestamp;

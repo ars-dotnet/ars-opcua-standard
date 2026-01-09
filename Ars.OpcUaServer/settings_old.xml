@@ -29,14 +29,14 @@
   <NodeClass Name="Regular" Description="所有的解析规则的信息">
     <RegularNode Name="Regular01" Description="">
       <!--       
-			    TypeCode(几个字节)
+			  0.TypeCode(数据类型 和 字节数)
 			    1: Bool(1/8);  2: Byte(1);    3: Int16(2);        4: UInt16(2);
                 5: Int32(4); 6: UInt32(4);  7: Int64(8);        8: UInt64(8);
                 9: Float(4); 10: Double(8); 11: StringAscii; 12:StringUnicode;
                 13: StringUtf8;
 				
 				
-        1.DeviceRequest.Address代表开始读取的点位
+        1.DeviceRequest.Address代表开始读取的点位;DeviceRequest.Length代表读多少个字节
         
         2.Index
            2.1 bool类型:代表bit[]开始的索引下标

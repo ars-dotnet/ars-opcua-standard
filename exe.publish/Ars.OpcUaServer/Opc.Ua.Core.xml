@@ -101377,6 +101377,11 @@
         <member name="M:Opc.Ua.NotificationMessage.MemberwiseClone">
             <summary cref="M:System.Object.MemberwiseClone" />
         </member>
+        <member name="P:Opc.Ua.NotificationMessage.Description">
+            <summary>
+            描述
+            </summary>
+        </member>
         <member name="P:Opc.Ua.NotificationMessage.StringTable">
             <summary>
             The string table that was received with the message.
@@ -124525,6 +124530,11 @@
             <remarks>
             The value of data value.
             </remarks>
+        </member>
+        <member name="P:Opc.Ua.DataValue.Description">
+            <summary>
+            描述
+            </summary>
         </member>
         <member name="P:Opc.Ua.DataValue.StatusCode">
             <summary>

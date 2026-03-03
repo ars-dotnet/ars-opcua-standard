@@ -109,14 +109,14 @@ namespace SharpNodeSettings.View
             treeView1.Nodes[0].SelectedImageKey = "VirtualMachine_16xLG";
             treeView1.Nodes[0].Tag = new NodeClass( )
             {
-                Name = "Devices",
+                Name = "devices",
                 Description = "所有的设备的集合对象"
             };
             treeView1.Nodes[1].ImageKey = "VirtualMachine_16xLG";
             treeView1.Nodes[1].SelectedImageKey = "VirtualMachine_16xLG";
             treeView1.Nodes[1].Tag = new NodeClass( )
             {
-                Name = "Server",
+                Name = "server",
                 Description = "所有挂载的服务器"
             };
 

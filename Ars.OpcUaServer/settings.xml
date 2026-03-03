@@ -4,14 +4,19 @@
     <NodeClass Name="guanghe" Description="">
       <!--DeviceType[1:三菱Qna-3E; 10:modbus-tcp; 20:异形Modbus-Tcp; 30:西门子; 40:欧姆龙; 50:SimplifyNet服务器]  
        DataFormat[0:ABCD; 1:BADC; 2:CDAB; 3:DCBA]-->
-      <NodeClass Name="mass_comb" Description="mass叠合台异常点位采集">
+      <NodeClass Name="massComb" Description="mass叠合台异常点位采集"> 
         <DeviceNode Name="a7" Description="" DeviceType="1" IpAddress="127.0.0.1" Port="6000" ConnectTimeOut="2000" CreateTime="2018/8/12 9:26:27" InstallationDate="2018/8/12 9:26:27">
           <DeviceRequest Name="数据请求" Description="一次完整的数据请求" Address="F0" Length="52" CaptureInterval="1000" PraseRegularCode="Regular01" />
         </DeviceNode>
       </NodeClass>
-      <NodeClass Name="pin_comb_line" Description="pin叠合台异常点位采集">
-        <DeviceNode Name="pin_comb" Description="" DeviceType="1" IpAddress="127.0.0.1" Port="6001" ConnectTimeOut="2000" CreateTime="2018/8/12 9:26:27" InstallationDate="2018/8/12 9:26:27">
+      <NodeClass Name="pinCombLine" Description="pin叠合台异常点位采集">
+        <DeviceNode Name="pinComb" Description="" DeviceType="1" IpAddress="127.0.0.1" Port="6001" ConnectTimeOut="2000" CreateTime="2018/8/12 9:26:27" InstallationDate="2018/8/12 9:26:27">
           <DeviceRequest Name="数据请求" Description="一次完整的数据请求" Address="F0" Length="22" CaptureInterval="1000" PraseRegularCode="Regular02" />
+        </DeviceNode>
+      </NodeClass>
+      <NodeClass Name="massReturnLine" Description="mass回流线异常点位采集">
+        <DeviceNode Name="massReturn" Description="" DeviceType="1" IpAddress="127.0.0.1" Port="6002" ConnectTimeOut="2000" CreateTime="2018/8/12 9:26:27" InstallationDate="2018/8/12 9:26:27">
+          <DeviceRequest Name="数据请求" Description="一次完整的数据请求" Address="D0" Length="100" CaptureInterval="1000" PraseRegularCode="Regular03" />
         </DeviceNode>
       </NodeClass>
     </NodeClass>
@@ -35,6 +40,17 @@
            3.1 bool类型:位的长度
            3.2 其它类型:字节的倍数
            3.3 string类型:字节的长度
+           
+				4.补充
+				Index从0开始
+				Index=0=D100,
+				Index=2=D101,
+				Index=4=D102,
+				Index=6=D103,
+				Index=10=D105,
+				
+				TypeLength代表读取位数
+				如Index=2,TypeLength=2,读取到的是[D101,D102]short类型数组
 			-->
       <RegularItemNode Name="F0" Description="异常123" Index="0" TypeCode="2" TypeLength="1" />
       <RegularItemNode Name="F1" Description="异常123" Index="1" TypeCode="2" TypeLength="1" />
@@ -42,7 +58,6 @@
       <RegularItemNode Name="F49" Description="异常1" Index="49" TypeCode="2" TypeLength="1" />
       <RegularItemNode Name="F50" Description="异常1" Index="50" TypeCode="2" TypeLength="1" />
       <RegularItemNode Name="F51" Description="异常1" Index="51" TypeCode="2" TypeLength="1" />
-
     </RegularNode>
 
     <RegularNode Name="Regular02" Description="">
@@ -57,6 +72,11 @@
       <RegularItemNode Name="F8" Description="异常1" Index="8" TypeCode="2" TypeLength="1" />
       <RegularItemNode Name="F9" Description="异常1" Index="9" TypeCode="2" TypeLength="1" />
       <RegularItemNode Name="F10" Description="异常1" Index="10" TypeCode="2" TypeLength="1" />
+    </RegularNode>
+  
+    <RegularNode Name="Regular03" Description="">
+      <RegularItemNode Name="D10" Description="异常100" Index="20" TypeCode="3" TypeLength="1" />
+      <RegularItemNode Name="D11" Description="异常101" Index="22" TypeCode="3" TypeLength="1" />
     </RegularNode>
   </NodeClass>
 </Settings>

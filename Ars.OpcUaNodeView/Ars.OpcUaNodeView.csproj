@@ -22,12 +22,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="HslCommunication">
-      <HintPath>..\packages\HslCommunication.6.0.0\lib\netstandard2.0\HslCommunication.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Resources.Designer.cs">
       <DesignTime>True</DesignTime>
       <AutoGen>True</AutoGen>
@@ -155,6 +149,10 @@
 
   <ItemGroup>
     <Folder Include="Forms\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="HslCommunication" Version="7.0.1" />
   </ItemGroup>
 
 </Project>

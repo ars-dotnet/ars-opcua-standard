@@ -28,8 +28,8 @@ namespace Ars.OpcUaNodeView
         /// </summary>
         private void InitializeComponent( )
         {
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Devices");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Server");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("devices");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("server");
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.label1 = new System.Windows.Forms.Label();
@@ -83,9 +83,9 @@ namespace Ars.OpcUaNodeView
             this.treeView1.Location = new System.Drawing.Point(6, 24);
             this.treeView1.Name = "treeView1";
             treeNode1.Name = "node_devices";
-            treeNode1.Text = "Devices";
+            treeNode1.Text = "devices";
             treeNode2.Name = "node_modbusServer";
-            treeNode2.Text = "Server";
+            treeNode2.Text = "server";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2});

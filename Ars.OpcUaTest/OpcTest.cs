@@ -15,28 +15,28 @@ namespace Ars.OpcUaTest
 
         static string[] combTags = new string[]
         {
-            "ns=2;devices/guanghe/mass_comb/a7/F0", //D107
-            "ns=2;devices/guanghe/mass_comb/a7/F1", //D107
-            "ns=2;devices/guanghe/mass_comb/a7/F3", //D107
-            "ns=2;devices/guanghe/mass_comb/a7/F49", //D107
-            "ns=2;devices/guanghe/mass_comb/a7/F50", //D107
-            "ns=2;devices/guanghe/mass_comb/a7/F51", //D107
-            //"ns=2;devices/guanghe/mass_comb/a7/D100.1", //D107
-            //"ns=2;devices/guanghe/mass_comb/a7/D100.2", //D107
-            //"ns=2;devices/guanghe/mass_comb/a7/D100.3", //D107
-            //"ns=2;devices/guanghe/mass_comb/a7/D100.4", //D107
-            //"ns=2;devices/guanghe/mass_comb/a7/D100.5", //D107
-            //"ns=2;devices/guanghe/mass_comb/a7/D100.6", //D107
-            //"ns=2;devices/guanghe/mass_comb/a7/D100.7", //D107
-            //"ns=2;devices/guanghe/mass_comb/a7/D100.8", //D107
-            //"ns=2;devices/guanghe/mass_comb/a7/D100.9", //D107
-            //"ns=2;devices/guanghe/mass_comb/a7/D100.10", //D107
-            //"ns=2;devices/guanghe/mass_comb/a7/D100.11", //D107
-            //"ns=2;devices/guanghe/mass_comb/a7/D100.12", //D107
-            //"ns=2;devices/guanghe/mass_comb/a7/D100.13", //D107
-            //"ns=2;devices/guanghe/mass_comb/a7/D100.14", //D107
-            //"ns=2;devices/guanghe/mass_comb/a7/D100.15", //D107
-            //"ns=2;devices/guanghe/mass_comb/a7/D100.16", //D107
+            "ns=2;devices/guanghe/massComb/a7/F0", //D107
+            "ns=2;devices/guanghe/massComb/a7/F1", //D107
+            "ns=2;devices/guanghe/massComb/a7/F3", //D107
+            "ns=2;devices/guanghe/massComb/a7/F49", //D107
+            "ns=2;devices/guanghe/massComb/a7/F50", //D107
+            "ns=2;devices/guanghe/massComb/a7/F51", //D107
+            //"ns=2;devices/guanghe/massComb/a7/D100.1", //D107
+            //"ns=2;devices/guanghe/massComb/a7/D100.2", //D107
+            //"ns=2;devices/guanghe/massComb/a7/D100.3", //D107
+            //"ns=2;devices/guanghe/massComb/a7/D100.4", //D107
+            //"ns=2;devices/guanghe/massComb/a7/D100.5", //D107
+            //"ns=2;devices/guanghe/massComb/a7/D100.6", //D107
+            //"ns=2;devices/guanghe/massComb/a7/D100.7", //D107
+            //"ns=2;devices/guanghe/massComb/a7/D100.8", //D107
+            //"ns=2;devices/guanghe/massComb/a7/D100.9", //D107
+            //"ns=2;devices/guanghe/massComb/a7/D100.10", //D107
+            //"ns=2;devices/guanghe/massComb/a7/D100.11", //D107
+            //"ns=2;devices/guanghe/massComb/a7/D100.12", //D107
+            //"ns=2;devices/guanghe/massComb/a7/D100.13", //D107
+            //"ns=2;devices/guanghe/massComb/a7/D100.14", //D107
+            //"ns=2;devices/guanghe/massComb/a7/D100.15", //D107
+            //"ns=2;devices/guanghe/massComb/a7/D100.16", //D107
         };
 
         static string[] RetLineTags = new string[]
@@ -77,10 +77,7 @@ namespace Ars.OpcUaTest
 
             //opcUaClient.AddSubscription("RetLine", RetLineTags, SubCallback);
 
-            while (true)
-            {
-                await Task.Delay(1000 * 3);
-            }
+            Console.ReadLine();
 
             //opcUaClient.Disconnect();
         }

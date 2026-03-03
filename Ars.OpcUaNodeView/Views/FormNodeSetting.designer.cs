@@ -31,9 +31,9 @@ namespace SharpNodeSettings.View
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Devices");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Server");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Regular");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("devices");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("server");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("regular");
             this.cMS_Device = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.新增类别ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.类别classToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -426,11 +426,11 @@ namespace SharpNodeSettings.View
             this.treeView1.Location = new System.Drawing.Point(6, 24);
             this.treeView1.Name = "treeView1";
             treeNode1.Name = "node_devices";
-            treeNode1.Text = "Devices";
+            treeNode1.Text = "devices";
             treeNode2.Name = "node_modbusServer";
-            treeNode2.Text = "Server";
+            treeNode2.Text = "server";
             treeNode3.Name = "node_modbusAlien";
-            treeNode3.Text = "Regular";
+            treeNode3.Text = "regular";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2,

@@ -1,4 +1,4 @@
-﻿
+
 using Ars.Common.OpcUaTool.Node.Device;
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using HslCommunication.BasicFramework;
+using HslCommunication.Core;
 
 namespace SharpNodeSettings.Forms
 {
@@ -23,7 +25,7 @@ namespace SharpNodeSettings.Forms
 
         private void FormModbusTcpAlien_Load( object sender, EventArgs e )
         {
-            comboBox1.DataSource = HslCommunication.BasicFramework.SoftBasic.GetEnumValues<HslCommunication.Core.DataFormat>( );
+            comboBox1.DataSource = SoftBasic.GetEnumValues<DataFormat>( );
 
             if (ModbusTcpAline != null)
             {

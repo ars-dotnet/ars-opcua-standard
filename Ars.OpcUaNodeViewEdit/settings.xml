@@ -1,91 +1,1249 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Settings>
-  <NodeClass Name="Devices" Description="所有的设备的集合对象">
-    <NodeClass Name="WorkFactory01" Description="">
-      <!-- DeviceType[1:三菱Qna-3E; 10:modbus-tcp; 20:异形Modbus-Tcp; 30:西门子; 40:欧姆龙; 50:SimplifyNet服务器]  -->
-      <!-- DataFormat[0:ABCD; 1:BADC; 2:CDAB; 3:DCBA] -->
-      <NodeClass Name="WorkShop01" Description="">
-        <DeviceNode Name="MelsecTest" Description="三菱PLC" DeviceType="1" IpAddress="127.0.0.1" Port="5007" ConnectTimeOut="2000" CreateTime="2018/8/12 9:26:27" InstallationDate="2018/8/12 9:26:27">
-          <DeviceRequest Name="数据请求" Description="一次完整的数据请求" Address="D100" Length="300" CaptureInterval="1000" PraseRegularCode="Regular01" />
+  <NodeClass Name="devices" Description="所有的设备的集合对象">
+    <NodeClass Name="taiguotaiding" Description="">
+      <!--DeviceType[1:三菱Qna-3E; 10:modbus-tcp; 20:异形Modbus-Tcp; 30:西门子; 40:欧姆龙; 50:SimplifyNet服务器]  
+       DataFormat[0:ABCD; 1:BADC; 2:CDAB; 3:DCBA]-->
+      <NodeClass Name="combination" Description="叠合台异常报警">
+        <DeviceNode Name="a7" Description="" DeviceType="1" IpAddress="127.0.0.1" Port="6000" ConnectTimeOut="2000" CreateTime="2018/8/12 9:26:27" InstallationDate="2018/8/12 9:26:27">
+          <DeviceRequest Name="数据请求" Description="一次完整的数据请求" Address="F0" Length="601" CaptureInterval="1000" PraseRegularCode="Regular01" />
         </DeviceNode>
+        <!--<DeviceNode Name="a7a" Description="" DeviceType="1" IpAddress="127.0.0.1" Port="6001" ConnectTimeOut="2000" CreateTime="2018/8/12 9:26:27" InstallationDate="2018/8/12 9:26:27">
+          <DeviceRequest Name="数据请求" Description="一次完整的数据请求" Address="F0" Length="601" CaptureInterval="1000" PraseRegularCode="Regular01" />
+        </DeviceNode>-->
       </NodeClass>
-      <NodeClass Name="WorkShop02" Description="">
-        <DeviceNode Name="ModbusTcpTest" Description="这是描述" DeviceType="10" ConnectTimeOut="1000" CreateTime="2018/8/9 19:58:49" InstallationDate="2018/8/9 19:58:49" IpAddress="127.0.0.1" Port="502" Station="1" IsAddressStartWithZero="true" DataFormat="0" IsStringReverse="false">
-          <DeviceRequest Name="数据请求" Description="一次完整的数据请求" Address="0" Length="300" CaptureInterval="1000" PraseRegularCode="Regular01" />
-        </DeviceNode>
-      </NodeClass>
-    </NodeClass>
-    <NodeClass Name="分厂二" Description="位于西南方">
-      <NodeClass Name="车间三" Description="">
-        <DeviceNode Name="ModbusTcp客户端02" Description="这是测试设备二的描述" DeviceType="10" ConnectTimeOut="1000" CreateTime="2018/8/10 23:01:28" InstallationDate="2018/8/10 23:01:28" IpAddress="127.0.0.1" Port="502" Station="1" IsAddressStartWithZero="true" DataFormat="0" IsStringReverse="false">
-          <DeviceRequest Name="数据请求" Description="一次完整的数据请求" Address="100" Length="200" CaptureInterval="2000" PraseRegularCode="Regular02" />
+      <NodeClass Name="dispatcherArea" Description="拆解区异常报警">
+        <DeviceNode Name="c12" Description="" DeviceType="1" IpAddress="127.0.0.1" Port="6002" ConnectTimeOut="2000" CreateTime="2018/8/12 9:26:27" InstallationDate="2018/8/12 9:26:27">
+          <DeviceRequest Name="数据请求" Description="一次完整的数据请求" Address="F0" Length="600" CaptureInterval="1000" PraseRegularCode="Regular02" />
         </DeviceNode>
       </NodeClass>
     </NodeClass>
-  </NodeClass>
-  <NodeClass Name="Server" Description="所有挂载的服务器">
-    <ServerNode Name="异形服务器" Description="这是一个异形服务器" CreateTime="2018/8/8 13:29:30" Port="1234" ServerType="2" Password="" />
   </NodeClass>
   <NodeClass Name="Regular" Description="所有的解析规则的信息">
     <RegularNode Name="Regular01" Description="">
       <!--       
-			    TypeCode(几个字节)
+		0.TypeCode(数据类型 和 字节数)
 			    1: Bool(1/8);  2: Byte(1);    3: Int16(2);        4: UInt16(2);
                 5: Int32(4); 6: UInt32(4);  7: Int64(8);        8: UInt64(8);
                 9: Float(4); 10: Double(8); 11: StringAscii; 12:StringUnicode;
                 13: StringUtf8;
-				
-				
-        1.DeviceRequest.Address代表开始读取的点位
+
+        1.DeviceRequest.Address代表开始读取的点位;DeviceRequest.Length代表读多少个字节
         
         2.Index
            2.1 bool类型:代表bit[]开始的索引下标
            2.2 其它类型:代表byte[]开始的索引下标
 				
-				3.TypeLength
+		3.TypeLength
            3.1 bool类型:位的长度
            3.2 其它类型:字节的倍数
            3.3 string类型:字节的长度
-        
-        4.eg:
-                   |Int16(包括D101,D102,D103) |
-                   |       | UInt16 |          Int32   |
-        点位  D100 | D101  | D102   |      D103 + D104  |
-        索引  0  1 | 2  3  | 4  5   |      6  7  8  9   |
-        
-        4.测试bool:
-             D100写666 [00000010 10011010]
-             D101写666 [00000010 10011010]
-             
-             读出来每个字节的位是从低位到高位的,也就是颠倒的
-             D100 [01011001 01000000]
-             D101 [01011001 01000000]
-             bool => 1
-             bool[] => [01011001]
-			-->
-      <RegularItemNode Name="error1" Description="异常1" Index="0" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error2" Description="异常1" Index="1" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error3" Description="异常1" Index="2" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error4" Description="异常1" Index="3" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error5" Description="异常1" Index="4" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error6" Description="异常1" Index="5" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error7" Description="异常1" Index="6" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error8" Description="异常1" Index="7" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error9" Description="异常1" Index="8" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error10" Description="异常1" Index="9" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error11" Description="异常1" Index="10" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error12" Description="异常1" Index="11" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error13" Description="异常1" Index="12" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error14" Description="异常1" Index="13" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error15" Description="异常1" Index="14" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="error16" Description="异常1" Index="15" TypeCode="1" TypeLength="1" />
-      <RegularItemNode Name="errorAll" Description="异常点位" Index="0" TypeCode="1" TypeLength="16" />
-
+	  -->
+      <RegularItemNode Name="F0" Description="F0:" Index="0" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F1" Description="F1:" Index="1" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F2" Description="F2:" Index="2" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F3" Description="F3:" Index="3" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F4" Description="F4:" Index="4" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F5" Description="F5:" Index="5" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F6" Description="F6:" Index="6" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F7" Description="F7:" Index="7" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F8" Description="F8:" Index="8" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F9" Description="F9:" Index="9" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F10" Description="F10:" Index="10" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F11" Description="F11:" Index="11" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F12" Description="F12:" Index="12" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F13" Description="F13:" Index="12" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F14" Description="F14:" Index="14" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F15" Description="F15:" Index="15" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F16" Description="F16:" Index="16" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F17" Description="F17:" Index="17" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F18" Description="F18:" Index="18" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F19" Description="F19:" Index="19" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F20" Description="F20:" Index="20" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F21" Description="F21:" Index="21" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F22" Description="F22:" Index="22" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F23" Description="F23:" Index="23" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F24" Description="F24:" Index="24" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F25" Description="F25:" Index="25" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F26" Description="F26:" Index="26" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F27" Description="F27:" Index="27" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F28" Description="F28:" Index="28" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F29" Description="F29:" Index="29" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F30" Description="F30:" Index="30" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F31" Description="F31:" Index="31" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F32" Description="F32:" Index="32" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F33" Description="F33:" Index="33" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F34" Description="F34:" Index="34" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F35" Description="F35:" Index="35" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F36" Description="F36:" Index="36" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F37" Description="F37:" Index="37" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F38" Description="F38:" Index="38" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F39" Description="F39:" Index="39" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F40" Description="F40:" Index="40" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F41" Description="F41:" Index="41" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F42" Description="F42:" Index="42" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F43" Description="F43:" Index="43" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F44" Description="F44:" Index="44" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F45" Description="F45:" Index="45" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F46" Description="F46:" Index="46" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F47" Description="F47:" Index="47" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F48" Description="F48:" Index="48" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F49" Description="F49:" Index="49" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F50" Description="A区 0P1急停" Index="50" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F51" Description="B区 0P1急停" Index="51" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F52" Description="A11 上层下铜箔急停	" Index="52" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F53" Description="A11 下层上铜箔急停	" Index="53" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F54" Description="F54: B区 0P暂停" Index="54" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F55" Description="F55: A区 0P暂停" Index="55" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F56" Description="F56: 铜箔区 上层铜箔暂停" Index="56" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F57" Description="F57: 铜箔区 下层铜箔暂停" Index="57" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F58" Description="F58:A7紧急停止	" Index="58" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F59" Description="F59:台车急停" Index="59" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F60" Description="F60:A11急停" Index="60" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F61" Description="F61:" Index="61" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F62" Description="F62:" Index="62" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F63" Description="F63:" Index="63" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F64" Description="F64:" Index="64" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F65" Description="F65:" Index="65" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F66" Description="F66:" Index="66" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F67" Description="F67:" Index="67" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F68" Description="F68:" Index="68" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F69" Description="F69:" Index="69" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F70" Description="F70:" Index="70" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F71" Description="F71:" Index="71" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F72" Description="F72:" Index="72" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F73" Description="F73:" Index="73" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F74" Description="F74:" Index="74" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F75" Description="F75:" Index="75" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F76" Description="F76:" Index="76" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F77" Description="F77:" Index="77" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F78" Description="F78:" Index="78" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F79" Description="F79:" Index="79" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F80" Description="F80:与水洗通信异常	" Index="80" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F81" Description="F81:与拆解通信异常	" Index="81" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F82" Description="F82:" Index="82" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F83" Description="F83:" Index="83" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F84" Description="F84:" Index="84" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F85" Description="F85:" Index="85" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F86" Description="F86:" Index="86" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F87" Description="F87:" Index="87" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F88" Description="F88:" Index="88" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F89" Description="F89:" Index="89" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F90" Description="F90:" Index="90" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F91" Description="F91:" Index="91" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F92" Description="F92:" Index="92" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F93" Description="F93:" Index="93" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F94" Description="F94:" Index="94" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F95" Description="F95:" Index="95" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F96" Description="F96:" Index="96" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F97" Description="F97:" Index="97" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F98" Description="F98:" Index="98" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F99" Description="F99:" Index="99" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F100" Description="F100:" Index="100" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F101" Description="F101:" Index="101" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F102" Description="F102:" Index="102" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F103" Description="F103:" Index="103" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F104" Description="F104:" Index="104" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F105" Description="F105:" Index="105" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F106" Description="F106:" Index="106" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F107" Description="F107:" Index="107" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F108" Description="F108:" Index="108" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F109" Description="F109:" Index="109" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F110" Description="F110:" Index="110" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F111" Description="F111:" Index="111" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F112" Description="F112:" Index="112" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F113" Description="F113:" Index="113" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F114" Description="F114:" Index="114" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F115" Description="F115:" Index="115" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F116" Description="F116:" Index="116" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F117" Description="F117:" Index="117" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F118" Description="F118:" Index="118" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F119" Description="F119:" Index="119" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F120" Description="F120:" Index="120" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F121" Description="F121:" Index="121" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F122" Description="F122:" Index="122" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F123" Description="F123:" Index="123" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F124" Description="F124:" Index="124" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F125" Description="F125:" Index="125" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F126" Description="F126:A区 安全毯	" Index="126" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F127" Description="F127:" Index="127" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F128" Description="F128:" Index="128" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F129" Description="F129:" Index="129" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F130" Description="F130:" Index="130" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F131" Description="F131:" Index="131" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F132" Description="F132:" Index="132" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F133" Description="F133:" Index="133" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F134" Description="F134:" Index="134" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F135" Description="F135:" Index="135" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F136" Description="F136:" Index="136" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F137" Description="F137:" Index="137" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F138" Description="F138:" Index="138" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F139" Description="F139:" Index="139" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F140" Description="F140:" Index="140" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F141" Description="F141:" Index="141" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F142" Description="F142:" Index="142" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F143" Description="F143:" Index="143" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F144" Description="F144:" Index="144" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F145" Description="F145:" Index="145" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F146" Description="F146:" Index="146" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F147" Description="F147:" Index="147" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F148" Description="F148:" Index="148" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F149" Description="F149:" Index="149" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F150" Description="F150:" Index="150" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F151" Description="F151:" Index="151" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F152" Description="F152:" Index="152" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F153" Description="F153:" Index="153" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F154" Description="F154:" Index="154" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F155" Description="F155:" Index="155" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F156" Description="F156:" Index="156" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F157" Description="F157:" Index="157" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F158" Description="F158:" Index="158" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F159" Description="F159:" Index="159" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F160" Description="F160:" Index="160" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F161" Description="F161:" Index="161" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F162" Description="F162:" Index="162" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F163" Description="F163:" Index="163" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F164" Description="F164:" Index="164" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F165" Description="F165:" Index="165" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F166" Description="F166:" Index="166" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F167" Description="F167:" Index="167" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F168" Description="F168:" Index="168" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F169" Description="F169:" Index="169" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F170" Description="F170:" Index="170" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F171" Description="F171:" Index="171" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F172" Description="F172:" Index="172" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F173" Description="F173:" Index="173" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F174" Description="F174:" Index="174" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F175" Description="F175:" Index="175" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F176" Description="F176:" Index="176" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F177" Description="F177:" Index="177" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F178" Description="F178:" Index="178" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F179" Description="F179:" Index="179" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F180" Description="F180:" Index="180" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F181" Description="F181:" Index="181" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F182" Description="F182:" Index="182" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F183" Description="F183:" Index="183" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F184" Description="F184:" Index="184" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F185" Description="F185:" Index="185" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F186" Description="F186:" Index="186" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F187" Description="F187:" Index="187" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F188" Description="F188:" Index="188" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F189" Description="F189:" Index="189" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F190" Description="F190:" Index="190" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F191" Description="F191:" Index="191" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F192" Description="F192:" Index="192" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F193" Description="F193:" Index="193" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F194" Description="F194:" Index="194" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F195" Description="F195:" Index="195" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F196" Description="F196:" Index="196" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F197" Description="F197:" Index="197" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F198" Description="F198:" Index="198" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F199" Description="F199:" Index="199" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F200" Description="F200:" Index="200" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F201" Description="F201:" Index="201" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F202" Description="F202:" Index="202" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F203" Description="F203:" Index="203" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F204" Description="F204:" Index="204" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F205" Description="F205:" Index="205" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F206" Description="F206:" Index="206" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F207" Description="F207:" Index="207" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F208" Description="F208:" Index="208" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F209" Description="F209:" Index="209" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F210" Description="F210:" Index="210" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F211" Description="F211:" Index="211" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F212" Description="F212:" Index="212" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F213" Description="F213:" Index="213" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F214" Description="F214:" Index="214" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F215" Description="F215:" Index="215" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F216" Description="F216:" Index="216" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F217" Description="F217:" Index="217" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F218" Description="F218:" Index="218" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F219" Description="F219:" Index="219" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F220" Description="F220:" Index="220" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F221" Description="F221:" Index="221" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F222" Description="F222:" Index="222" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F223" Description="F223:" Index="223" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F224" Description="F224:" Index="224" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F225" Description="F225:" Index="225" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F226" Description="F226:" Index="226" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F227" Description="F227:" Index="227" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F228" Description="F228:" Index="228" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F229" Description="F229:" Index="229" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F230" Description="F230:A2上层输送超时	" Index="230" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F231" Description="F231:A2上层输送变频器异常	" Index="231" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F232" Description="F232:" Index="232" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F233" Description="F233:" Index="233" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F234" Description="F234:" Index="234" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F235" Description="F235:A2下层输送超时	" Index="235" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F236" Description="F236:A2下层输送变频器异常	" Index="236" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F237" Description="F237:" Index="237" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F238" Description="F238:" Index="238" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F239" Description="F239:" Index="239" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F240" Description="F240:A3上层输送超时	" Index="240" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F241" Description="F241:A3上层输送变频器异常	" Index="241" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F242" Description="F242:" Index="242" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F243" Description="F243:" Index="243" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F244" Description="F244:" Index="244" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F245" Description="F245:A3下层输送超时	" Index="245" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F246" Description="F246:A3下层输送变频器异常	" Index="246" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F247" Description="F247:" Index="247" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F248" Description="F248:" Index="248" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F249" Description="F249:" Index="249" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F250" Description="F250:A4-1上层输送超时	" Index="250" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F251" Description="F251:A4-1上层输送变频器异常	" Index="251" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F252" Description="F252:" Index="252" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F253" Description="F253:" Index="253" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F254" Description="F254:" Index="254" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F255" Description="F255:A4下层输送超时	" Index="255" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F256" Description="F256:A4下层输送变频器异常	" Index="256" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F257" Description="F257:" Index="257" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F258" Description="F258:" Index="258" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F259" Description="F259:" Index="259" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F260" Description="F260:A5上层输送超时	" Index="260" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F261" Description="F261:A5上层输送变频器异常	" Index="261" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F262" Description="F262:" Index="262" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F263" Description="F263:" Index="263" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F264" Description="F264:" Index="264" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F265" Description="F265:A5下层输送超时	" Index="265" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F266" Description="F266:A5下层输送变频器异常	" Index="266" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F267" Description="F267:" Index="267" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F268" Description="F268:" Index="268" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F269" Description="F269:" Index="269" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F270" Description="F270:" Index="270" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F271" Description="F271:" Index="271" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F272" Description="F272:" Index="272" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F273" Description="F273:" Index="273" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F274" Description="F274:" Index="274" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F275" Description="F275:" Index="275" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F276" Description="F276:" Index="276" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F277" Description="F277:" Index="277" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F278" Description="F278:" Index="278" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F279" Description="F279:" Index="279" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F280" Description="F280:" Index="280" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F281" Description="F281:" Index="281" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F282" Description="F282:" Index="282" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F283" Description="F283:" Index="283" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F284" Description="F284:" Index="284" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F285" Description="F285:" Index="285" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F286" Description="F286:" Index="286" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F287" Description="F287:" Index="287" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F288" Description="F288:" Index="288" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F289" Description="F289:" Index="289" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F290" Description="F290:" Index="290" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F291" Description="F291:" Index="291" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F292" Description="F292:" Index="292" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F293" Description="F293:" Index="293" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F294" Description="F294:" Index="294" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F295" Description="F295:" Index="295" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F296" Description="F296:" Index="296" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F297" Description="F297:" Index="297" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F298" Description="F298:" Index="298" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F299" Description="F299:" Index="299" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F300" Description="F300:A7-4 变频器异常" Index="300" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F301" Description="F301:A7-4 超高（上极限" Index="301" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F302" Description="F302:A7-4 工作位异常" Index="302" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F303" Description="F303:A7-4 不在位置" Index="303" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F304" Description="F304" Index="304" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F305" Description="F305:A7-3 输送超时" Index="305" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F306" Description="F306:A7-3 输送变频器异常" Index="306" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F307" Description="F307:A7-3 输送后超边异常" Index="307" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F308" Description="F308:" Index="308" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F309" Description="F309:" Index="309" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F310" Description="F310:" Index="310" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F311" Description="F311:" Index="311" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F312" Description="F312:" Index="312" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F313" Description="F313:" Index="313" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F314" Description="F314:" Index="314" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F315" Description="F315:" Index="315" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F316" Description="F316:" Index="316" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F317" Description="F317:" Index="317" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F318" Description="F318:" Index="318" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F319" Description="F319:" Index="319" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F320" Description="F320:A7-2 变频器异常	" Index="320" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F321" Description="F321:A7-2 超高（上极限）	" Index="321" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F322" Description="F322:" Index="322" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F323" Description="F323:A7-2 不在位置	" Index="323" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F324" Description="F324:" Index="324" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F325" Description="F325:" Index="325" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F326" Description="F326:" Index="326" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F327" Description="F327:" Index="327" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F328" Description="F328:" Index="328" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F329" Description="F329:" Index="329" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F330" Description="F330:A7-1 输送超时" Index="330" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F331" Description="F331:A7-1 输送电动滚筒异常	" Index="331" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F332" Description="F332:A7-1 输送后超边异常	" Index="332" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F333" Description="F333:" Index="333" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F334" Description="F334:" Index="334" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F335" Description="F335:A6-1 上层输送超时	" Index="335" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F336" Description="F336:A6 上层输送变频器异常	" Index="336" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F337" Description="F337:A6 上层输送后超边异常	" Index="337" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F338" Description="F338:A6 上层输送前超边异常	" Index="338" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F339" Description="F339:" Index="339" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F340" Description="F340:A6 下层输送超时	" Index="340" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F341" Description="F341:A6 下层输送变频器异常	" Index="341" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F342" Description="F342:A6 下层输送后超边异常	" Index="342" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F343" Description="F343:A6 下层输送前超边异常	" Index="343" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F344" Description="F344:A7-5 移栽顶升气缸异常	" Index="344" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F345" Description="F345:A7 校正气缸异常	" Index="345" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F346" Description="F346:A7 输送顶升气缸异常	" Index="346" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F347" Description="F347:" Index="347" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F348" Description="F348:" Index="348" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F349" Description="F349:" Index="349" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F350" Description="F350:" Index="350" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F351" Description="F351:" Index="351" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F352" Description="F352:" Index="352" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F353" Description="F353:" Index="353" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F354" Description="F354:" Index="354" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F355" Description="F355:" Index="355" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F356" Description="F356:" Index="356" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F357" Description="F357:" Index="357" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F358" Description="F358:" Index="358" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F359" Description="F359:" Index="359" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F360" Description="F360:A19-3  轴異常	" Index="360" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F361" Description="F361:A19-3 前极限	" Index="361" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F362" Description="F362:A19-3 后极限	" Index="362" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F363" Description="F363:A19-3 原点请求	" Index="363" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F364" Description="F364：	" Index="364" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F365" Description="F365:A19-4  轴異常	" Index="365" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F366" Description="F366:A19-4  前极限	" Index="366" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F367" Description="F367:A19-4 后极限	" Index="367" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F368" Description="F368:A19-4 原点请求	" Index="368" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F369" Description="F369:" Index="369" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F370" Description="F370:A19  轴異常	" Index="370" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F371" Description="F371:A19  前极限	" Index="371" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F372" Description="F372:A19后极限	" Index="372" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F373" Description="F373:A19 原点复归請求	" Index="373" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F374" Description="F374:" Index="374" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F375" Description="F375:A19-1轴異常	" Index="375" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F376" Description="F376:A19-1 下极限	" Index="376" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F377" Description="F377:A19-1 上极限	" Index="377" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F378" Description="F378:A19-1 原点复归請求	" Index="378" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F379" Description="F379:" Index="379" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F380" Description="F380:A19 挡板气缸伸缩异常	" Index="380" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F381" Description="F381:A19 挡板气缸升降异常	" Index="381" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F382" Description="F382:A19 辅助气缸伸缩异常	" Index="382" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F383" Description="F383:A19 吸盘气缸升降异常	" Index="383" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F384" Description="F384:A19 夹组气缸伸缩异常	" Index="384" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F385" Description="F385:A19-2 轴异常	" Index="385" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F386" Description="F386:A19-2 下极限	" Index="386" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F387" Description="F387:A19-2 上极限	" Index="387" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F388" Description="F388:A19-2原点请求	" Index="388" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F389" Description="F389:" Index="389" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F390" Description="F390:A19 有物异常	" Index="390" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F391" Description="F391:A19-1左安全BAR异常	" Index="391" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F392" Description="F392:A19-1右安全BAR异常	" Index="392" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F393" Description="F393:A19安全光栅A7处1异常	" Index="393" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F394" Description="F394:A19安全光栅A7处2异常	" Index="394" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F395" Description="F395:" Index="395" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F396" Description="F396:" Index="396" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F397" Description="F397:A19前侧安全拉绳异常	" Index="397" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F398" Description="F398:A19后侧安全拉绳异常	" Index="398" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F399" Description="F399:" Index="399" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F400" Description="F400:B12 输送超时	" Index="400" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F401" Description="F401:B12 输送变频器异常	" Index="401" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F402" Description="F402:B12 输送后超边异常	" Index="402" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F403" Description="F403:B12 输送前超边异常	" Index="403" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F404" Description="F404:B12 升降气缸异常	" Index="404" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F405" Description="F405:B13 输送超时	" Index="405" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F406" Description="F406:B13 输送变频器异常	" Index="406" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F407" Description="F407:B13 输送后超边异常	" Index="407" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F408" Description="F408:B13 输送前超边异常	" Index="408" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F409" Description="F409:B13 校正气缸异常	" Index="409" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F410" Description="F410:B13 定位气缸异常	" Index="410" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F411" Description="F411:" Index="411" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F412" Description="F412:" Index="412" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F413" Description="F413:" Index="413" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F414" Description="F414:" Index="414" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F415" Description="F415:B14 输送电机异常	" Index="415" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F416" Description="F416:B14 上轮不在位	" Index="416" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F417" Description="F417:B14 下轮不在位	" Index="417" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F418" Description="F418:B14 急停	" Index="418" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F419" Description="F419:B14 粘尘机未启动	" Index="419" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F420" Description="F420:" Index="420" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F421" Description="F421:" Index="421" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F422" Description="F422:" Index="422" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F423" Description="F423:" Index="423" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F424" Description="F424:" Index="424" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F425" Description="F425:A14 输送超时	" Index="425" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F426" Description="F426:A14 输送变频器异常	" Index="426" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F427" Description="F427:A14 输送后超边异常	" Index="427" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F428" Description="F428:" Index="428" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F429" Description="F429:" Index="429" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F430" Description="F429:" Index="430" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F431" Description="F431:" Index="431" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F432" Description="F432:" Index="432" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F433" Description="F433:" Index="433" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F434" Description="F434:" Index="434" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F435" Description="F435:B11-2  轴異常	" Index="435" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F436" Description="F436:B11-2  前极限	" Index="436" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F437" Description="F437:B11-2 后极限	" Index="437" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F438" Description="F438:B11-2 原点复归請求	" Index="438" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F439" Description="F439:" Index="439" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F440" Description="F440:" Index="440" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F441" Description="F441:" Index="441" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F442" Description="F442:" Index="442" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F443" Description="F443:" Index="443" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F444" Description="F444:" Index="444" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F445" Description="F445:A7a叠合急停EMS	" Index="445" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F446" Description="F446：	" Index="446" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F447" Description="F447:" Index="447" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F448" Description="F448:" Index="448" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F449" Description="F449:" Index="449" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F450" Description="F450:A11-4 输送过载	" Index="450" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F451" Description="F451:A8  输送超边界	" Index="451" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F452" Description="F452:A11-4 输送超时	" Index="452" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F453" Description="F453:A8 输送超时	" Index="453" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F454" Description="F454:" Index="454" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F455" Description="F455:A8-1 输送过载	" Index="455" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F456" Description="F456:A8-1铜箔长度异常	" Index="456" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F457" Description="F457:A8-1上层铜箔输送不到位	" Index="457" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F458" Description="F458:A15-1下层铜箔输送不到位	" Index="458" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F459" Description="F459:A15a-1下层铜箔输送不到位	" Index="459" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F460" Description="F460:A11a-4   输送过载	" Index="460" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F461" Description="F461:A15a-1 输送过载	" Index="461" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F462" Description="F460:A15 输送过载	" Index="462" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F463" Description="F463:A15a  输送超边界	" Index="463" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F464" Description="F464:A15  输送超边界	" Index="464" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F465" Description="F465:A15   输送超边界	" Index="465" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F466" Description="F466:A11a-4 输送超时	" Index="466" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F467" Description="F467:A15a-1 输送超时	" Index="467" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F468" Description="F468:A15-1 输送超时	" Index="468" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F469" Description="F469:A15-1铜箔长度异常	" Index="469" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F470" Description="F470:A11  轴異常	" Index="470" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F471" Description="F471:A11-1  前极限	" Index="471" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F472" Description="F472:A11-1 后极限	" Index="472" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F473" Description="F473:A11-1 原点复归請求	" Index="473" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F474" Description="F474:" Index="474" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F475" Description="F475:A11-2  轴異常	" Index="475" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F476" Description="F476:A11-2  前极限	" Index="476" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F477" Description="F477:A11-2 后极限	" Index="477" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F478" Description="F478:A11-2 原点复归請求	" Index="478" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F479" Description="F479:" Index="479" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F480" Description="F480:A9  轴異常	" Index="480" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F481" Description="F481:" Index="481" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F482" Description="F482:" Index="482" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F483" Description="F483:" Index="483" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F484" Description="F484:" Index="484" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F485" Description="F485:" Index="485" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F486" Description="F486:A11吸取异常	" Index="486" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F487" Description="F487:" Index="487" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F488" Description="F488:" Index="488" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F489" Description="F489：	" Index="489" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F490" Description="F490:" Index="490" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F491" Description="F491:" Index="491" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F492" Description="F492:" Index="492" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F493" Description="F493:A10-1 上层未穿铜箔	" Index="493" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F494" Description="F494:A10-2 下层未穿铜箔	" Index="494" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F495" Description="F495:A10-1  轴異常	" Index="495" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F496" Description="F496:A10-1  前极限	" Index="496" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F497" Description="F497:A10-1 后极限	" Index="497" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F498" Description="F498:A10-1 原点复归請求	" Index="498" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F499" Description="F499:" Index="499" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F500" Description="F500:A10-2  轴異常	" Index="500" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F501" Description="F501:A10-2  前极限	" Index="501" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F502" Description="F502:A10-2 后极限	" Index="502" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F503" Description="F503:A10-2 原点复归請求	" Index="503" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F504" Description="F504:" Index="504" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F505" Description="F505:" Index="505" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F506" Description="F506:" Index="506" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F507" Description="F507:" Index="507" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F508" Description="F508:A10 裁刀顶缸位置异常	" Index="508" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F509" Description="F509:A10裁刀左安全插销1	" Index="509" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F510" Description="F510:A10裁刀左安全插销2	" Index="510" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F511" Description="F511:A10裁刀前安全光电	" Index="511" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F512" Description="F512:A10裁刀后安全光电	" Index="512" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F513" Description="F513:A10 裁刀不在上位	" Index="513" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F514" Description="F514:A11铜箔放卷超时	" Index="514" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F515" Description="F515:上层铜箔接头	" Index="515" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F516" Description="F516:下层铜箔接头检知	" Index="516" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F517" Description="F517:" Index="517" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F518" Description="F518:A10a 裁刀顶缸位置异常	" Index="518" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F519" Description="F519:A10a 裁刀左安全插销1	" Index="519" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F520" Description="F520:A10a 裁刀左安全插销2	" Index="520" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F521" Description="F521:A10a 裁刀前安全光电	" Index="521" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F522" Description="F522:A10a 裁刀后安全光电	" Index="522" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F523" Description="F523:A10a 裁刀不在上位	" Index="523" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F524" Description="F524:A11a铜箔放卷超时	" Index="524" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F525" Description="F525:上层刀具使用次数已到	" Index="525" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F526" Description="F526:下层刀具使用次数已到	" Index="526" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F527" Description="F527:粘尘纸使用次数已到	" Index="527" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F528" Description="F528:" Index="528" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F529" Description="F529:" Index="529" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F530" Description="F530:" Index="530" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F531" Description="F531:" Index="531" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F532" Description="F532:" Index="532" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F533" Description="F533:确认A8 上面铜箔料号	" Index="533" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F534" Description="F534:确认A15 上面铜箔料号	" Index="534" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F535" Description="F535:确认A15a 上面铜箔料号	" Index="535" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F536" Description="F536:" Index="536" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F537" Description="F537:A10-1上层未穿铜箔	" Index="537" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F538" Description="F538:A10-2下层未穿铜箔	" Index="538" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F539" Description="F539:A10-1 检测到铜箔接头	" Index="539" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F540" Description="F540:A10-2检测到铜箔接头	" Index="540" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F541" Description="F541	" Index="541" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F542" Description="F542:上层铜箔尺寸不到位	" Index="542" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F543" Description="F543:" Index="543" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F544" Description="F544:" Index="544" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F545" Description="F545:" Index="545" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F546" Description="F546:" Index="546" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F547" Description="F547:" Index="547" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F548" Description="F548:" Index="548" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F549" Description="F549:" Index="549" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F550" Description="F550:" Index="550" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F551" Description="F551:" Index="551" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F552" Description="F552:" Index="552" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F553" Description="F553:" Index="553" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F554" Description="F554:" Index="554" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F555" Description="F555:" Index="555" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F556" Description="F556:" Index="556" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F557" Description="F557:" Index="557" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F558" Description="F558:" Index="558" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F559" Description="F559:" Index="559" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F560" Description="F560:" Index="560" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F561" Description="F561:" Index="561" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F562" Description="F562:" Index="562" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F563" Description="F563:" Index="563" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F564" Description="F564:" Index="564" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F565" Description="F565:" Index="565" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F566" Description="F566:" Index="566" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F567" Description="F567:" Index="567" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F568" Description="F568:" Index="568" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F569" Description="F569:" Index="569" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F570" Description="F570:" Index="570" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F571" Description="F571:" Index="571" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F572" Description="F572:" Index="572" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F573" Description="F573:" Index="573" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F574" Description="F574:" Index="574" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F575" Description="F575:" Index="575" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F576" Description="F576:" Index="576" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F577" Description="F577:" Index="577" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F578" Description="F578:" Index="578" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F579" Description="F579:" Index="579" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F580" Description="F580:" Index="580" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F581" Description="F581:" Index="581" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F582" Description="F582:" Index="582" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F583" Description="F583:" Index="583" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F584" Description="F584:" Index="584" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F585" Description="F585:B11输送钢板无资料	" Index="585" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F586" Description="F586:B11a钢板无资料	" Index="586" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F587" Description="F587:B11a安全光栅异常	" Index="587" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F588" Description="F588:B11a压制气缸异常	" Index="588" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F589" Description="F589:B11a紧急停止	" Index="589" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F590" Description="F590:B11a移行轴異常	" Index="590" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F591" Description="F591:B11a移行前极限	" Index="591" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F592" Description="F592:B11a移行后极限	" Index="592" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F593" Description="F593:B11a移行原点复归請求	" Index="593" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F594" Description="F594:B11a升降气缸异常	" Index="594" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F595" Description="F595:B11a拨杆异常	" Index="595" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F596" Description="F596:B11a吸取异常	" Index="596" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F597" Description="F597:B11a无交错	" Index="597" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F598" Description="F598:B11a安全BAR异常	" Index="598" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F599" Description="F599:B11a安全拉绳	" Index="599" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F600" Description="F600:0P1急停	" Index="600" TypeCode="2" TypeLength="1" />
     </RegularNode>
+
     <RegularNode Name="Regular02" Description="">
-      <RegularItemNode Name="温度" Description="" Index="300" TypeCode="3" TypeLength="1" />
-      <RegularItemNode Name="压力" Description="" Index="310" TypeCode="3" TypeLength="1" />
-      <RegularItemNode Name="条码" Description="" Index="320" TypeCode="11" TypeLength="10" />
+      <RegularItemNode Name="F0" Description="F0：F0:异常" Index="0" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F1" Description="F1：F1:拆解OP系统急停" Index="1" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F2" Description="F2：F2:拆解OP系统保养" Index="2" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F3" Description="F3：" Index="3" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F4" Description="F4：" Index="4" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F5" Description="F5：" Index="5" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F6" Description="F6：C12拆解台紧急停止" Index="6" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F7" Description="F7：" Index="7" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F8" Description="F8：" Index="8" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F9" Description="F9：" Index="9" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F10" Description="F10：" Index="10" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F11" Description="F11：" Index="11" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F12" Description="F12：" Index="12" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F13" Description="F13：" Index="13" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F14" Description="F14：" Index="14" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F15" Description="F15：" Index="15" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F16" Description="F16：" Index="16" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F17" Description="F17：" Index="17" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F18" Description="F18：" Index="18" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F19" Description="F19：" Index="19" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F20" Description="F20：" Index="20" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F21" Description="F21：" Index="21" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F22" Description="F22：" Index="22" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F23" Description="F23：" Index="23" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F24" Description="F24：" Index="24" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F25" Description="F25：" Index="25" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F26" Description="F26：" Index="26" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F27" Description="F27：" Index="27" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F28" Description="F28：" Index="28" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F29" Description="F29：" Index="29" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F30" Description="F30：B2-1输送变频器异常" Index="30" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F31" Description="F31：B2-1输送逾时" Index="31" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F32" Description="F32：" Index="32" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F33" Description="F33：" Index="33" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F34" Description="F34：" Index="34" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F35" Description="F35：B3-1输送变频器异常" Index="35" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F36" Description="F36：B3止挡升降逾时" Index="36" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F37" Description="F37：B3输送前超边" Index="37" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F38" Description="F38：B3校正气缸位置异常" Index="38" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F39" Description="F39：" Index="39" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F40" Description="F40：B5-3翻转变频器异常" Index="40" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F41" Description="F41：B5-3翻转变频器逾时" Index="41" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F42" Description="F42：B5 旋转 180度 极限" Index="42" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F43" Description="F43：B5 旋转 0度 极限" Index="43" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F44" Description="F44：研磨机后支撑安全门（电柜侧）" Index="44" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F45" Description="F45：B5 输送变频器异常" Index="45" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F46" Description="F46：B5 输送逾时" Index="46" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F47" Description="F47：B5输送前超边界" Index="47" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F48" Description="F48：B5输送后超边" Index="48" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F49" Description="F49：B5 翻转安全门开启" Index="49" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F50" Description="F50：B5 压制气缸位置异常" Index="50" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F51" Description="F51：电脑侧安全门异常" Index="51" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F52" Description="F52：" Index="52" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F53" Description="F53：" Index="53" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F54" Description="F54：" Index="54" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F55" Description="F55：" Index="55" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F56" Description="F56：" Index="56" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F57" Description="F57：" Index="57" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F58" Description="F58：" Index="58" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F59" Description="F59：" Index="59" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F60" Description="F60：" Index="60" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F61" Description="F61：" Index="61" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F62" Description="F62：" Index="62" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F63" Description="F63：" Index="63" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F64" Description="F64：" Index="64" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F65" Description="F65：B3 输送变频器异常" Index="65" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F66" Description="F66：B3 输送逾时" Index="66" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F67" Description="F67：B3 输送后超边" Index="67" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F68" Description="F68：B3 止挡尺寸切换位置异常" Index="68" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F69" Description="F69：" Index="69" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F70" Description="F70：" Index="70" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F71" Description="F71：" Index="71" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F72" Description="F72：" Index="72" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F73" Description="F73：" Index="73" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F74" Description="F74：" Index="74" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F75" Description="F75：B4 输送变频器异常" Index="75" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F76" Description="F76：B4 输送逾时" Index="76" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F77" Description="F77：B4 输送前超边" Index="77" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F78" Description="F78：B4 校正气缸位置异常" Index="78" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F79" Description="F79：" Index="79" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F80" Description="F80：" Index="80" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F81" Description="F81：" Index="81" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F82" Description="F82：" Index="82" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F83" Description="F83：" Index="83" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F84" Description="F84：" Index="84" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F85" Description="F85：" Index="85" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F86" Description="F86：" Index="86" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F87" Description="F87：" Index="87" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F88" Description="F88：" Index="88" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F89" Description="F89：" Index="89" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F90" Description="F90：" Index="90" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F91" Description="F91：" Index="91" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F92" Description="F92：" Index="92" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F93" Description="F93：" Index="93" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F94" Description="F94：" Index="94" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F95" Description="F95：" Index="95" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F96" Description="F96：" Index="96" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F97" Description="F97：" Index="97" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F98" Description="F98：" Index="98" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F99" Description="F99：" Index="99" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F100" Description="F100：" Index="100" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F101" Description="F101：" Index="101" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F102" Description="F102：" Index="102" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F103" Description="F103：" Index="103" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F104" Description="F104：" Index="104" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F105" Description="F105：" Index="105" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F106" Description="F106：" Index="106" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F107" Description="F107：" Index="107" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F108" Description="F108：" Index="108" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F109" Description="F109：" Index="109" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F110" Description="F110：" Index="110" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F111" Description="F111：" Index="111" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F112" Description="F112：" Index="112" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F113" Description="F113：" Index="113" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F114" Description="F114：" Index="114" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F115" Description="F115：" Index="115" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F116" Description="F116：" Index="116" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F117" Description="F117：" Index="117" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F118" Description="F118：" Index="118" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F119" Description="F119：" Index="119" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F120" Description="F120：" Index="120" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F121" Description="F121：" Index="121" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F122" Description="F122：" Index="122" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F123" Description="F123：" Index="123" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F124" Description="F124：" Index="124" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F125" Description="F125：" Index="125" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F126" Description="F126：" Index="126" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F127" Description="F127：" Index="127" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F128" Description="F128：" Index="128" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F129" Description="F129：" Index="129" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F130" Description="F130：" Index="130" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F131" Description="F131：" Index="131" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F132" Description="F132：" Index="132" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F133" Description="F133：" Index="133" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F134" Description="F134：" Index="134" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F135" Description="F135：" Index="135" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F136" Description="F136：" Index="136" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F137" Description="F137：" Index="137" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F138" Description="F138：" Index="138" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F139" Description="F139：" Index="139" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F140" Description="F140：" Index="140" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F141" Description="F141：" Index="141" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F142" Description="F142：" Index="142" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F143" Description="F143：" Index="143" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F144" Description="F144：" Index="144" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F145" Description="F145：" Index="145" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F146" Description="F146：" Index="146" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F147" Description="F147：" Index="147" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F148" Description="F148：" Index="148" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F149" Description="F149：" Index="149" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F150" Description="F150：" Index="150" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F151" Description="F151：" Index="151" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F152" Description="F152：" Index="152" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F153" Description="F153：" Index="153" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F154" Description="F154：" Index="154" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F155" Description="F155：" Index="155" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F156" Description="F156：" Index="156" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F157" Description="F157：" Index="157" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F158" Description="F158：" Index="158" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F159" Description="F159：" Index="159" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F160" Description="F160：" Index="160" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F161" Description="F161：" Index="161" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F162" Description="F162：" Index="162" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F163" Description="F163：" Index="163" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F164" Description="F164：" Index="164" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F165" Description="F165：" Index="165" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F166" Description="F166：" Index="166" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F167" Description="F167：" Index="167" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F168" Description="F168：" Index="168" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F169" Description="F169：" Index="169" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F170" Description="F170：" Index="170" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F171" Description="F171：" Index="171" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F172" Description="F172：" Index="172" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F173" Description="F173：" Index="173" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F174" Description="F174：" Index="174" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F175" Description="F175：" Index="175" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F176" Description="F176：" Index="176" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F177" Description="F177：" Index="177" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F178" Description="F178：" Index="178" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F179" Description="F179：" Index="179" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F180" Description="F180：" Index="180" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F181" Description="F181：" Index="181" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F182" Description="F182：" Index="182" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F183" Description="F183：" Index="183" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F184" Description="F184：" Index="184" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F185" Description="F185：" Index="185" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F186" Description="F186：" Index="186" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F187" Description="F187：" Index="187" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F188" Description="F188：" Index="188" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F189" Description="F189：" Index="189" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F190" Description="F190：" Index="190" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F191" Description="F191：" Index="191" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F192" Description="F192：C37-3升降上极限" Index="192" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F193" Description="F193：C20暂存架升降下极限" Index="193" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F194" Description="F194：" Index="194" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F195" Description="F195：" Index="195" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F196" Description="F196：" Index="196" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F197" Description="F197：" Index="197" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F198" Description="F198：" Index="198" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F199" Description="F199：" Index="199" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F200" Description="F200：C37-2 下层输送变频器异常" Index="200" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F201" Description="F201：C37-2 下层输送超时" Index="201" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F202" Description="F202：" Index="202" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F203" Description="F203：" Index="203" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F204" Description="F204：" Index="204" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F205" Description="F205：" Index="205" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F206" Description="F206：" Index="206" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F207" Description="F207：" Index="207" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F208" Description="F208：" Index="208" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F209" Description="F209：" Index="209" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F210" Description="F210：C11 上层输送变频器异常" Index="210" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F211" Description="F211：C11 上层输送逾时" Index="211" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F212" Description="F212：C11上层输送前超边" Index="212" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F213" Description="F213：C11上层输送后超边" Index="213" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F214" Description="F214：" Index="214" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F215" Description="F215：" Index="215" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F216" Description="F216：" Index="216" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F217" Description="F217：" Index="217" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F218" Description="F218：" Index="218" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F219" Description="F219：" Index="219" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F220" Description="F220：C38-3走行变频器异常" Index="220" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F221" Description="F221：C38-3走行逾时" Index="221" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F222" Description="F222：" Index="222" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F223" Description="F223：" Index="223" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F224" Description="F224：" Index="224" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F225" Description="F225：" Index="225" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F226" Description="F226：" Index="226" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F227" Description="F227：" Index="227" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F228" Description="F228：" Index="228" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F229" Description="F229：" Index="229" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F230" Description="F230：C11下层输送接触器异常" Index="230" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F231" Description="F231：C11下层输送超时" Index="231" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F232" Description="F232：C11下层输送后超边" Index="232" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F233" Description="F233：C11下层输送前超边" Index="233" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F234" Description="F234：" Index="234" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F235" Description="F235：" Index="235" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F236" Description="F236：" Index="236" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F237" Description="F237：" Index="237" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F238" Description="F238：" Index="238" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F239" Description="F239：" Index="239" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F240" Description="F240：" Index="240" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F241" Description="F241：" Index="241" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F242" Description="F242：" Index="242" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F243" Description="F243：" Index="243" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F244" Description="F244：" Index="244" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F245" Description="F245：" Index="245" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F246" Description="F246：" Index="246" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F247" Description="F247：" Index="247" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F248" Description="F248：" Index="248" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F249" Description="F249：" Index="249" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F250" Description="F250：" Index="250" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F251" Description="F251：" Index="251" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F252" Description="F252：" Index="252" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F253" Description="F253：" Index="253" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F254" Description="F254：" Index="254" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F255" Description="F255：" Index="255" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F256" Description="F256：" Index="256" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F257" Description="F257：" Index="257" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F258" Description="F258：" Index="258" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F259" Description="F259：" Index="259" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F260" Description="F260：" Index="260" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F261" Description="F261：" Index="261" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F262" Description="F262：" Index="262" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F263" Description="F263：" Index="263" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F264" Description="F264：" Index="264" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F265" Description="F265：" Index="265" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F266" Description="F266：" Index="266" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F267" Description="F267：" Index="267" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F268" Description="F268：" Index="268" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F269" Description="F269：" Index="269" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F270" Description="F270：" Index="270" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F271" Description="F271：" Index="271" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F272" Description="F272：" Index="272" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F273" Description="F273：" Index="273" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F274" Description="F274：" Index="274" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F275" Description="F275：" Index="275" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F276" Description="F276：" Index="276" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F277" Description="F277：" Index="277" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F278" Description="F278：" Index="278" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F279" Description="F279：" Index="279" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F280" Description="F280：C12上层输送变频器异常" Index="280" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F281" Description="F281：C12输送逾时" Index="281" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F282" Description="F282：C12输送后超边" Index="282" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F283" Description="F283：C12输送前超边" Index="283" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F284" Description="F284：" Index="284" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F285" Description="F285：C12 油压马达升降逾时" Index="285" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F286" Description="F286：C12升降油压马达接触器异常" Index="286" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F287" Description="F287：C12拆解台有载无入板记忆" Index="287" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F288" Description="F288：" Index="288" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F289" Description="F289：" Index="289" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F290" Description="F290：" Index="290" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F291" Description="F291：" Index="291" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F292" Description="F292：" Index="292" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F293" Description="F293：" Index="293" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F294" Description="F294：" Index="294" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F295" Description="F295：" Index="295" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F296" Description="F296：" Index="296" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F297" Description="F297：" Index="297" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F298" Description="F298：" Index="298" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F299" Description="F299：" Index="299" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F300" Description="F300：B1 走行轴异常" Index="300" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F301" Description="F301：B1 走行 前极限" Index="301" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F302" Description="F302：B1 走行 后极限" Index="302" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F303" Description="F303：B1 走行轴原点回归请求" Index="303" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F304" Description="F304：B1安全光栅异常" Index="304" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F305" Description="F305：B1安全拉绳异常" Index="305" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F306" Description="F306：B1移行不在位置" Index="306" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F307" Description="F307：B1安全光栅(拆解侧)" Index="307" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F308" Description="F308：" Index="308" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F309" Description="F309：" Index="309" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F310" Description="F310：B1-1 升降轴异常（钢板）" Index="310" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F311" Description="F311：B1-1 升降 下极限" Index="311" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F312" Description="F312：B1-1 升降 上极限" Index="312" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F313" Description="F313：B1-1 升降轴原点回归请求" Index="313" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F314" Description="F314：B1-1     吸着异常" Index="314" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F315" Description="F315：B1-1安全左BAR" Index="315" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F316" Description="F316：B1-1右安全BAR" Index="316" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F317" Description="F317：B1-1升降不在位置（钢板）" Index="317" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F318" Description="F318：" Index="318" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F319" Description="F319：" Index="319" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F320" Description="F320：" Index="320" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F321" Description="F321：" Index="321" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F322" Description="F322：" Index="322" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F323" Description="F323：" Index="323" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F324" Description="F324：" Index="324" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F325" Description="F325：" Index="325" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F326" Description="F326：" Index="326" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F327" Description="F327：" Index="327" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F328" Description="F328：" Index="328" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F329" Description="F329：" Index="329" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F330" Description="F330：B1-2 升降轴异常（芯板）" Index="330" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F331" Description="F331：B1-2 升降 下极限" Index="331" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F332" Description="F332：B1-2 升降 上极限" Index="332" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F333" Description="F333：B1-2 升降轴原点回归请求" Index="333" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F334" Description="F334：B1-2 吸真空异常" Index="334" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F335" Description="F335：B1-2 左安全BAR" Index="335" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F336" Description="F336：B1-2右安全BAR" Index="336" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F337" Description="F337：B1-2升降不在位置（成品）" Index="337" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F338" Description="F338：" Index="338" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F339" Description="F339：" Index="339" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F340" Description="F340：B3尺寸切换轴异常" Index="340" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F341" Description="F341：B3尺寸切换 前极限" Index="341" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F342" Description="F342：B3尺寸切换 后极限" Index="342" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F343" Description="F343：B3尺寸切换轴原点回归请求" Index="343" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F344" Description="F344：B3尺寸切换不在位置" Index="344" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F345" Description="F345：" Index="345" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F346" Description="F346：" Index="346" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F347" Description="F347：" Index="347" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F348" Description="F348：" Index="348" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F349" Description="F349：" Index="349" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F350" Description="F350：B4尺寸切换轴异常" Index="350" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F351" Description="F351：B4尺寸切换 前极限" Index="351" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F352" Description="F352：B4尺寸切换 后极限" Index="352" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F353" Description="F353：B4尺寸切换轴原点回归请求" Index="353" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F354" Description="F354：B4尺寸切换不在位置" Index="354" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F355" Description="F355：" Index="355" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F356" Description="F356：" Index="356" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F357" Description="F357：" Index="357" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F358" Description="F358：" Index="358" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F359" Description="F359：" Index="359" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F360" Description="F360：" Index="360" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F361" Description="F361：" Index="361" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F362" Description="F362：" Index="362" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F363" Description="F363：" Index="363" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F364" Description="F364：" Index="364" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F365" Description="F365：" Index="365" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F366" Description="F366：" Index="366" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F367" Description="F367：" Index="367" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F368" Description="F368：" Index="368" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F369" Description="F369：" Index="369" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F370" Description="F370：" Index="370" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F371" Description="F371：" Index="371" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F372" Description="F372：" Index="372" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F373" Description="F373：" Index="373" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F374" Description="F374：" Index="374" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F375" Description="F375：" Index="375" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F376" Description="F376：" Index="376" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F377" Description="F377：" Index="377" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F378" Description="F378：" Index="378" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F379" Description="F379：" Index="379" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F380" Description="F380：" Index="380" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F381" Description="F381：" Index="381" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F382" Description="F382：" Index="382" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F383" Description="F383：" Index="383" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F384" Description="F384：" Index="384" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F385" Description="F385：" Index="385" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F386" Description="F386：" Index="386" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F387" Description="F387：" Index="387" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F388" Description="F388：" Index="388" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F389" Description="F389：" Index="389" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F390" Description="F390：" Index="390" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F391" Description="F391：" Index="391" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F392" Description="F392：" Index="392" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F393" Description="F393：" Index="393" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F394" Description="F394：" Index="394" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F395" Description="F395：" Index="395" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F396" Description="F396：" Index="396" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F397" Description="F397：" Index="397" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F398" Description="F398：" Index="398" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F399" Description="F399：" Index="399" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F400" Description="F400：B15 走行轴异常" Index="400" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F401" Description="F401：B15 走行 前极限" Index="401" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F402" Description="F402：B15 走行 后极限" Index="402" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F403" Description="F403：B15 走行轴原点回归请求" Index="403" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F404" Description="F404：B15侧安全光栅异常" Index="404" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F405" Description="F405：B15安全拉绳异常" Index="405" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F406" Description="F406：B15移行不在位置" Index="406" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F407" Description="F407：" Index="407" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F408" Description="F408：" Index="408" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F409" Description="F409：" Index="409" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F410" Description="F410：B15-1 升降轴异常" Index="410" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F411" Description="F411：B15-1 升降 下极限" Index="411" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F412" Description="F412：B15-1 升降 上极限" Index="412" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F413" Description="F413：B15-1 升降轴原点回归请求" Index="413" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F414" Description="F414：B15-1     吸着异常" Index="414" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F415" Description="F415：B15-1安全左BAR" Index="415" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F416" Description="F416：B15-1右安全BAR" Index="416" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F417" Description="F417：B15升降不在位置" Index="417" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F418" Description="F418：" Index="418" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F419" Description="F419：" Index="419" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F420" Description="F420：B16 走行轴异常" Index="420" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F421" Description="F421：B16 走行 前极限" Index="421" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F422" Description="F422：B16 走行 后极限" Index="422" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F423" Description="F423：B16 走行轴原点回归请求" Index="423" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F424" Description="F424：B16侧安全光栅异常" Index="424" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F425" Description="F425：B16侧安全拉绳异常" Index="425" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F426" Description="F426：B16移行不在位置" Index="426" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F427" Description="F427：" Index="427" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F428" Description="F428：" Index="428" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F429" Description="F429：" Index="429" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F430" Description="F430：B16-1 升降轴异常" Index="430" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F431" Description="F431：B16-1 升降 下极限" Index="431" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F432" Description="F432：B16-1 升降 上极限" Index="432" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F433" Description="F433：B16-1 升降轴原点回归请求" Index="433" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F434" Description="F434：B16-1     吸/破异常" Index="434" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F435" Description="F435：B16-1安全左BAR" Index="435" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F436" Description="F436：B16-1右安全BAR" Index="436" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F437" Description="F437：B16-1升降不在位置" Index="437" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F438" Description="F438：" Index="438" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F439" Description="F439：" Index="439" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F440" Description="F440：" Index="440" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F441" Description="F441：" Index="441" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F442" Description="F442：" Index="442" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F443" Description="F443：" Index="443" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F444" Description="F444：" Index="444" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F445" Description="F445：" Index="445" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F446" Description="F446：" Index="446" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F447" Description="F447：" Index="447" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F448" Description="F448：" Index="448" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F449" Description="F449：" Index="449" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F450" Description="F450：" Index="450" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F451" Description="F451：" Index="451" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F452" Description="F452：" Index="452" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F453" Description="F453：" Index="453" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F454" Description="F454：" Index="454" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F455" Description="F455：" Index="455" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F456" Description="F456：" Index="456" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F457" Description="F457：" Index="457" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F458" Description="F458：" Index="458" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F459" Description="F459：" Index="459" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F460" Description="F460：C6无目的位" Index="460" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F461" Description="F461：C11上层移栽扫码逾时" Index="461" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F462" Description="F462：C11上层移栽扫码失败" Index="462" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F463" Description="F463：C44无载有底板编码" Index="463" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F464" Description="F464：PC连线异常" Index="464" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F465" Description="F465：B3有钢板无测厚资料" Index="465" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F466" Description="F466：B15吊头回收无测厚资料" Index="466" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F467" Description="F467：拆解成品推车不在位置" Index="467" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F468" Description="F468：B21钢板堆叠高度到达" Index="468" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F469" Description="F469：B18堆叠高度到达" Index="469" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F470" Description="F470：B22推车堆叠高度到达" Index="470" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F471" Description="F471：B17堆叠高度到达" Index="471" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F472" Description="F472：B3无钢板尺寸资料" Index="472" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F473" Description="F473：B4无钢板尺寸资料" Index="473" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F474" Description="F474：B15吊头无钢板尺寸资料" Index="474" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F475" Description="F475：B16吊头无钢板尺寸资料" Index="475" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F476" Description="F476：组合钢板资料需求无" Index="476" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F477" Description="F477：B3测厚异常，人工确认无误可强制过" Index="477" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F478" Description="F478：B22推车测距异常，重新测距" Index="478" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F479" Description="F479：B17测距异常，重新测距" Index="479" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F480" Description="F480：B21推车测距异常，重新测距" Index="480" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F481" Description="F481：B18测距异常，重新测距" Index="481" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F482" Description="F482：B1成品吊头测距异常，重新测距" Index="482" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F483" Description="F483：B1-2成品吊头推车位测距未完成" Index="483" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F484" Description="F484：B19测距异常，重新测距" Index="484" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F485" Description="F485：B20测距异常，重新测距" Index="485" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F486" Description="F486：拆解与组合通讯异常" Index="486" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F487" Description="F487：B2钢板无释放记忆" Index="487" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F488" Description="F488：拆解与水洗机通讯异常" Index="488" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F489" Description="F489：" Index="489" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F490" Description="F490：C10台车=》拆解通讯异常" Index="490" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F491" Description="F491：C10 台车站位确认异常" Index="491" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F492" Description="F492：" Index="492" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F493" Description="F493：" Index="493" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F494" Description="F494：" Index="494" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F495" Description="F495：" Index="495" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F496" Description="F496：" Index="496" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F497" Description="F497：" Index="497" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F498" Description="F498：" Index="498" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F499" Description="F499：" Index="499" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F500" Description="F500：" Index="500" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F501" Description="F501：C10急停" Index="501" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F502" Description="F502：" Index="502" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F503" Description="F503：" Index="503" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F504" Description="F504：" Index="504" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F505" Description="F505：" Index="505" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F506" Description="F506：" Index="506" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F507" Description="F507：" Index="507" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F508" Description="F508：" Index="508" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F509" Description="F509：" Index="509" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F510" Description="F510：C10 上层输送变频器异常" Index="510" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F511" Description="F511：C10 上层输送逾时" Index="511" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F512" Description="F512：C10 上层输送前超边" Index="512" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F513" Description="F513：C10 上层输送后超边" Index="513" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F514" Description="F514：" Index="514" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F515" Description="F515：C10 下层输送接触器异常" Index="515" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F516" Description="F516：C10 下层输送逾时" Index="516" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F517" Description="F517：C10 下层输送前超边" Index="517" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F518" Description="F518：C10 下层输送后超边" Index="518" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F519" Description="F519：" Index="519" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F520" Description="F520：C10 走行变频器异常" Index="520" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F521" Description="F521：C10 走行逾时" Index="521" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F522" Description="F522：C10 走行前极限(拆解侧)" Index="522" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F523" Description="F523：C10 走行后极限(组合侧)" Index="523" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F524" Description="F524：C10-3走行前进安全BAR(拆解侧)" Index="524" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F525" Description="F525：C10-3走行后退安全BAR(组合侧)" Index="525" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F526" Description="F526：" Index="526" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F527" Description="F527：" Index="527" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F528" Description="F528：" Index="528" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F529" Description="F529：拆解=》C10台车通讯异常" Index="529" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F530" Description="F530：" Index="530" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F531" Description="F531：" Index="531" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F532" Description="F532：" Index="532" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F533" Description="F533：" Index="533" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F534" Description="F534：" Index="534" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F535" Description="F535：" Index="535" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F536" Description="F536：" Index="536" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F537" Description="F537：" Index="537" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F538" Description="F538：" Index="538" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F539" Description="F539：" Index="539" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F540" Description="F540：" Index="540" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F541" Description="F541：" Index="541" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F542" Description="F542：" Index="542" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F543" Description="F543：" Index="543" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F544" Description="F544：" Index="544" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F545" Description="F545：" Index="545" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F546" Description="F546：" Index="546" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F547" Description="F547：" Index="547" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F548" Description="F548：" Index="548" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F549" Description="F549：" Index="549" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F550" Description="F550：" Index="550" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F551" Description="F551：" Index="551" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F552" Description="F552：" Index="552" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F553" Description="F553：" Index="553" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F554" Description="F554：" Index="554" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F555" Description="F555：" Index="555" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F556" Description="F556：" Index="556" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F557" Description="F557：" Index="557" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F558" Description="F558：" Index="558" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F559" Description="F559：" Index="559" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F560" Description="F560：" Index="560" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F561" Description="F561：" Index="561" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F562" Description="F562：" Index="562" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F563" Description="F563：" Index="563" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F564" Description="F564：" Index="564" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F565" Description="F565：" Index="565" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F566" Description="F566：" Index="566" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F567" Description="F567：" Index="567" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F568" Description="F568：" Index="568" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F569" Description="F569：" Index="569" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F570" Description="F570：" Index="570" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F571" Description="F571：" Index="571" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F572" Description="F572：" Index="572" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F573" Description="F573：" Index="573" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F574" Description="F574：" Index="574" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F575" Description="F575：" Index="575" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F576" Description="F576：" Index="576" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F577" Description="F577：" Index="577" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F578" Description="F578：" Index="578" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F579" Description="F579：" Index="579" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F580" Description="F580：" Index="580" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F581" Description="F581：" Index="581" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F582" Description="F582：" Index="582" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F583" Description="F583：" Index="583" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F584" Description="F584：" Index="584" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F585" Description="F585：" Index="585" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F586" Description="F586：" Index="586" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F587" Description="F587：" Index="587" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F588" Description="F588：" Index="588" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F589" Description="F589：" Index="589" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F590" Description="F590：" Index="590" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F591" Description="F591：" Index="591" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F592" Description="F592：" Index="592" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F593" Description="F593：" Index="593" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F594" Description="F594：" Index="594" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F595" Description="F595：" Index="595" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F596" Description="F596：" Index="596" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F597" Description="F597：" Index="597" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F598" Description="F598：" Index="598" TypeCode="2" TypeLength="1" />
+      <RegularItemNode Name="F599" Description="F599：" Index="599" TypeCode="2" TypeLength="1" />
+
     </RegularNode>
   </NodeClass>
 </Settings>

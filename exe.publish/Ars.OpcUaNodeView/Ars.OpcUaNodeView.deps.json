@@ -8,9 +8,8 @@
     ".NETCoreApp,Version=v6.0": {
       "Ars.OpcUaNodeView/1.5.374": {
         "dependencies": {
-          "Ars.OpcUaTool": "1.4.372-preview-20250721",
-          "Nerdbank.GitVersioning": "3.6.133",
-          "HslCommunication": "6.0.0.0",
+          "Ars.OpcUaTool": "1.4.372-preview-20260413",
+          "HslCommunication": "7.0.1",
           "Opc.Ua.Configuration": "1.5.0.0",
           "Opc.Ua.Core": "1.5.0.0",
           "Opc.Ua.Security.Certificates": "1.5.0.0",
@@ -20,7 +19,17 @@
           "Ars.OpcUaNodeView.dll": {}
         }
       },
-      "Microsoft.CSharp/4.7.0": {},
+      "HslCommunication/7.0.1": {
+        "dependencies": {
+          "Newtonsoft.Json": "13.0.3"
+        },
+        "runtime": {
+          "lib/netstandard2.0/HslCommunication.dll": {
+            "assemblyVersion": "7.0.1.0",
+            "fileVersion": "7.0.1.0"
+          }
+        }
+      },
       "Microsoft.Extensions.Logging.Abstractions/6.0.4": {
         "runtime": {
           "lib/net6.0/Microsoft.Extensions.Logging.Abstractions.dll": {
@@ -29,7 +38,6 @@
           }
         }
       },
-      "Nerdbank.GitVersioning/3.6.133": {},
       "Newtonsoft.Json/13.0.3": {
         "runtime": {
           "lib/net6.0/Newtonsoft.Json.dll": {
@@ -46,76 +54,61 @@
           }
         }
       },
-      "System.Security.Cryptography.Cng/5.0.0": {
+      "Ars.OpcUaTool/1.4.372-preview-20260413": {
         "dependencies": {
-          "System.Formats.Asn1": "8.0.1"
-        }
-      },
-      "Ars.OpcUaTool/1.4.372-preview-20250721": {
-        "dependencies": {
-          "Microsoft.CSharp": "4.7.0",
-          "OPCFoundation.NetStandard.Opc.Ua.Server": "1.4.372-preview-20250721"
+          "OPCFoundation.NetStandard.Opc.Ua.Server": "1.4.372-preview-20260413"
         },
         "runtime": {
           "Ars.OpcUaTool.dll": {
-            "assemblyVersion": "1.4.372-preview-20250721",
-            "fileVersion": "1.5.374.18"
+            "assemblyVersion": "1.5.0.0",
+            "fileVersion": "1.5.374.21"
           }
         }
       },
-      "OPCFoundation.NetStandard.Opc.Ua.Configuration/1.4.372-preview-20250721": {
+      "OPCFoundation.NetStandard.Opc.Ua.Configuration/1.4.372-preview-20260413": {
         "dependencies": {
-          "OPCFoundation.NetStandard.Opc.Ua.Core": "1.4.372-preview-20250721"
+          "OPCFoundation.NetStandard.Opc.Ua.Core": "1.4.372-preview-20260413"
         },
         "runtime": {
           "Opc.Ua.Configuration.dll": {
-            "assemblyVersion": "1.4.372-preview-20250721",
-            "fileVersion": "1.5.374.18"
+            "assemblyVersion": "1.5.0.0",
+            "fileVersion": "1.5.374.21"
           }
         }
       },
-      "OPCFoundation.NetStandard.Opc.Ua.Core/1.4.372-preview-20250721": {
+      "OPCFoundation.NetStandard.Opc.Ua.Core/1.4.372-preview-20260413": {
         "dependencies": {
           "Microsoft.Extensions.Logging.Abstractions": "6.0.4",
           "Newtonsoft.Json": "13.0.3",
-          "OPCFoundation.NetStandard.Opc.Ua.Security.Certificates": "1.4.372-preview-20250721"
+          "OPCFoundation.NetStandard.Opc.Ua.Security.Certificates": "1.4.372-preview-20260413"
         },
         "runtime": {
           "Opc.Ua.Core.dll": {
-            "assemblyVersion": "1.4.372-preview-20250721",
-            "fileVersion": "1.5.374.18"
+            "assemblyVersion": "1.5.0.0",
+            "fileVersion": "1.5.374.21"
           }
         }
       },
-      "OPCFoundation.NetStandard.Opc.Ua.Security.Certificates/1.4.372-preview-20250721": {
+      "OPCFoundation.NetStandard.Opc.Ua.Security.Certificates/1.4.372-preview-20260413": {
         "dependencies": {
-          "System.Formats.Asn1": "8.0.1",
-          "System.Security.Cryptography.Cng": "5.0.0"
+          "System.Formats.Asn1": "8.0.1"
         },
         "runtime": {
           "Opc.Ua.Security.Certificates.dll": {
-            "assemblyVersion": "1.4.372-preview-20250721",
-            "fileVersion": "1.5.374.18"
+            "assemblyVersion": "1.5.0.0",
+            "fileVersion": "1.5.374.21"
           }
         }
       },
-      "OPCFoundation.NetStandard.Opc.Ua.Server/1.4.372-preview-20250721": {
+      "OPCFoundation.NetStandard.Opc.Ua.Server/1.4.372-preview-20260413": {
         "dependencies": {
-          "OPCFoundation.NetStandard.Opc.Ua.Configuration": "1.4.372-preview-20250721",
-          "OPCFoundation.NetStandard.Opc.Ua.Core": "1.4.372-preview-20250721"
+          "OPCFoundation.NetStandard.Opc.Ua.Configuration": "1.4.372-preview-20260413",
+          "OPCFoundation.NetStandard.Opc.Ua.Core": "1.4.372-preview-20260413"
         },
         "runtime": {
           "Opc.Ua.Server.dll": {
-            "assemblyVersion": "1.4.372-preview-20250721",
-            "fileVersion": "1.5.374.18"
-          }
-        }
-      },
-      "HslCommunication/6.0.0.0": {
-        "runtime": {
-          "HslCommunication.dll": {
-            "assemblyVersion": "6.0.0.0",
-            "fileVersion": "6.0.0.0"
+            "assemblyVersion": "1.5.0.0",
+            "fileVersion": "1.5.374.21"
           }
         }
       },
@@ -123,7 +116,7 @@
         "runtime": {
           "Opc.Ua.Configuration.dll": {
             "assemblyVersion": "1.5.0.0",
-            "fileVersion": "1.5.374.18"
+            "fileVersion": "1.5.374.21"
           }
         }
       },
@@ -131,7 +124,7 @@
         "runtime": {
           "Opc.Ua.Core.dll": {
             "assemblyVersion": "1.5.0.0",
-            "fileVersion": "1.5.374.18"
+            "fileVersion": "1.5.374.21"
           }
         }
       },
@@ -139,7 +132,7 @@
         "runtime": {
           "Opc.Ua.Security.Certificates.dll": {
             "assemblyVersion": "1.5.0.0",
-            "fileVersion": "1.5.374.18"
+            "fileVersion": "1.5.374.21"
           }
         }
       },
@@ -147,7 +140,15 @@
         "runtime": {
           "Opc.Ua.Server.dll": {
             "assemblyVersion": "1.5.0.0",
-            "fileVersion": "1.5.374.18"
+            "fileVersion": "1.5.374.21"
+          }
+        }
+      },
+      "TOPRO.HSL/0.0.0.0": {
+        "runtime": {
+          "TOPRO.HSL.dll": {
+            "assemblyVersion": "0.0.0.0",
+            "fileVersion": "0.0.0.0"
           }
         }
       }
@@ -159,12 +160,12 @@
       "serviceable": false,
       "sha512": ""
     },
-    "Microsoft.CSharp/4.7.0": {
+    "HslCommunication/7.0.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-pTj+D3uJWyN3My70i2Hqo+OXixq3Os2D1nJ2x92FFo6sk8fYS1m1WLNTs0Dc1uPaViH0YvEEwvzddQ7y4rhXmA==",
-      "path": "microsoft.csharp/4.7.0",
-      "hashPath": "microsoft.csharp.4.7.0.nupkg.sha512"
+      "sha512": "sha512-0bCqL+x6ExItJmb4tFAxh0tNsUdpuUH+PUC08H+SmENY0YKD/TeaA29bcWP7M4nxfGNqhSf8qLhR8eUGSUK+6A==",
+      "path": "hslcommunication/7.0.1",
+      "hashPath": "hslcommunication.7.0.1.nupkg.sha512"
     },
     "Microsoft.Extensions.Logging.Abstractions/6.0.4": {
       "type": "package",
@@ -172,13 +173,6 @@
       "sha512": "sha512-K14wYgwOfKVELrUh5eBqlC8Wvo9vvhS3ZhIvcswV2uS/ubkTRPSQsN557EZiYUSSoZNxizG+alN4wjtdyLdcyw==",
       "path": "microsoft.extensions.logging.abstractions/6.0.4",
       "hashPath": "microsoft.extensions.logging.abstractions.6.0.4.nupkg.sha512"
-    },
-    "Nerdbank.GitVersioning/3.6.133": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-VZWMd5YAeDxpjWjAP/X6bAxnRMiEf6tES/ITN0X5CHJgkWLLeHGmEALivmTAfYM6P+P/3Szy6VCITUAkqjcHVw==",
-      "path": "nerdbank.gitversioning/3.6.133",
-      "hashPath": "nerdbank.gitversioning.3.6.133.nupkg.sha512"
     },
     "Newtonsoft.Json/13.0.3": {
       "type": "package",
@@ -194,40 +188,28 @@
       "path": "system.formats.asn1/8.0.1",
       "hashPath": "system.formats.asn1.8.0.1.nupkg.sha512"
     },
-    "System.Security.Cryptography.Cng/5.0.0": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-jIMXsKn94T9JY7PvPq/tMfqa6GAaHpElRDpmG+SuL+D3+sTw2M8VhnibKnN8Tq+4JqbPJ/f+BwtLeDMEnzAvRg==",
-      "path": "system.security.cryptography.cng/5.0.0",
-      "hashPath": "system.security.cryptography.cng.5.0.0.nupkg.sha512"
-    },
-    "Ars.OpcUaTool/1.4.372-preview-20250721": {
+    "Ars.OpcUaTool/1.4.372-preview-20260413": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "OPCFoundation.NetStandard.Opc.Ua.Configuration/1.4.372-preview-20250721": {
+    "OPCFoundation.NetStandard.Opc.Ua.Configuration/1.4.372-preview-20260413": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "OPCFoundation.NetStandard.Opc.Ua.Core/1.4.372-preview-20250721": {
+    "OPCFoundation.NetStandard.Opc.Ua.Core/1.4.372-preview-20260413": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "OPCFoundation.NetStandard.Opc.Ua.Security.Certificates/1.4.372-preview-20250721": {
+    "OPCFoundation.NetStandard.Opc.Ua.Security.Certificates/1.4.372-preview-20260413": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "OPCFoundation.NetStandard.Opc.Ua.Server/1.4.372-preview-20250721": {
+    "OPCFoundation.NetStandard.Opc.Ua.Server/1.4.372-preview-20260413": {
       "type": "project",
-      "serviceable": false,
-      "sha512": ""
-    },
-    "HslCommunication/6.0.0.0": {
-      "type": "reference",
       "serviceable": false,
       "sha512": ""
     },
@@ -247,6 +229,11 @@
       "sha512": ""
     },
     "Opc.Ua.Server/1.5.0.0": {
+      "type": "reference",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "TOPRO.HSL/0.0.0.0": {
       "type": "reference",
       "serviceable": false,
       "sha512": ""

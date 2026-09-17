@@ -8,7 +8,7 @@
     ".NETCoreApp,Version=v6.0": {
       "Ars.OpcUaNodeView/1.5.374": {
         "dependencies": {
-          "Ars.OpcUaTool": "1.4.372-preview-20260413",
+          "Ars.OpcUaTool": "1.4.372-preview-20260917",
           "HslCommunication": "7.0.1",
           "Opc.Ua.Configuration": "1.5.0.0",
           "Opc.Ua.Core": "1.5.0.0",
@@ -54,9 +54,9 @@
           }
         }
       },
-      "Ars.OpcUaTool/1.4.372-preview-20260413": {
+      "Ars.OpcUaTool/1.4.372-preview-20260917": {
         "dependencies": {
-          "OPCFoundation.NetStandard.Opc.Ua.Server": "1.4.372-preview-20260413"
+          "OPCFoundation.NetStandard.Opc.Ua.Server": "1.4.372-preview-20260917"
         },
         "runtime": {
           "Ars.OpcUaTool.dll": {
@@ -65,9 +65,9 @@
           }
         }
       },
-      "OPCFoundation.NetStandard.Opc.Ua.Configuration/1.4.372-preview-20260413": {
+      "OPCFoundation.NetStandard.Opc.Ua.Configuration/1.4.372-preview-20260917": {
         "dependencies": {
-          "OPCFoundation.NetStandard.Opc.Ua.Core": "1.4.372-preview-20260413"
+          "OPCFoundation.NetStandard.Opc.Ua.Core": "1.4.372-preview-20260917"
         },
         "runtime": {
           "Opc.Ua.Configuration.dll": {
@@ -76,11 +76,11 @@
           }
         }
       },
-      "OPCFoundation.NetStandard.Opc.Ua.Core/1.4.372-preview-20260413": {
+      "OPCFoundation.NetStandard.Opc.Ua.Core/1.4.372-preview-20260917": {
         "dependencies": {
           "Microsoft.Extensions.Logging.Abstractions": "6.0.4",
           "Newtonsoft.Json": "13.0.3",
-          "OPCFoundation.NetStandard.Opc.Ua.Security.Certificates": "1.4.372-preview-20260413"
+          "OPCFoundation.NetStandard.Opc.Ua.Security.Certificates": "1.4.372-preview-20260917"
         },
         "runtime": {
           "Opc.Ua.Core.dll": {
@@ -89,7 +89,7 @@
           }
         }
       },
-      "OPCFoundation.NetStandard.Opc.Ua.Security.Certificates/1.4.372-preview-20260413": {
+      "OPCFoundation.NetStandard.Opc.Ua.Security.Certificates/1.4.372-preview-20260917": {
         "dependencies": {
           "System.Formats.Asn1": "8.0.1"
         },
@@ -100,10 +100,10 @@
           }
         }
       },
-      "OPCFoundation.NetStandard.Opc.Ua.Server/1.4.372-preview-20260413": {
+      "OPCFoundation.NetStandard.Opc.Ua.Server/1.4.372-preview-20260917": {
         "dependencies": {
-          "OPCFoundation.NetStandard.Opc.Ua.Configuration": "1.4.372-preview-20260413",
-          "OPCFoundation.NetStandard.Opc.Ua.Core": "1.4.372-preview-20260413"
+          "OPCFoundation.NetStandard.Opc.Ua.Configuration": "1.4.372-preview-20260917",
+          "OPCFoundation.NetStandard.Opc.Ua.Core": "1.4.372-preview-20260917"
         },
         "runtime": {
           "Opc.Ua.Server.dll": {
@@ -188,27 +188,27 @@
       "path": "system.formats.asn1/8.0.1",
       "hashPath": "system.formats.asn1.8.0.1.nupkg.sha512"
     },
-    "Ars.OpcUaTool/1.4.372-preview-20260413": {
+    "Ars.OpcUaTool/1.4.372-preview-20260917": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "OPCFoundation.NetStandard.Opc.Ua.Configuration/1.4.372-preview-20260413": {
+    "OPCFoundation.NetStandard.Opc.Ua.Configuration/1.4.372-preview-20260917": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "OPCFoundation.NetStandard.Opc.Ua.Core/1.4.372-preview-20260413": {
+    "OPCFoundation.NetStandard.Opc.Ua.Core/1.4.372-preview-20260917": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "OPCFoundation.NetStandard.Opc.Ua.Security.Certificates/1.4.372-preview-20260413": {
+    "OPCFoundation.NetStandard.Opc.Ua.Security.Certificates/1.4.372-preview-20260917": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
     },
-    "OPCFoundation.NetStandard.Opc.Ua.Server/1.4.372-preview-20260413": {
+    "OPCFoundation.NetStandard.Opc.Ua.Server/1.4.372-preview-20260917": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

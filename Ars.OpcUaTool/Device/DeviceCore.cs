@@ -311,7 +311,7 @@ namespace Ars.Common.OpcUaTool.Device
         {
             while (isQuit == 0)
             {
-                Thread.Sleep(1000);
+                //Thread.Sleep(1000);
 
                 bool isDataChange = false;           // 数据是否发生了变化
                 foreach (var Request in Requests)
